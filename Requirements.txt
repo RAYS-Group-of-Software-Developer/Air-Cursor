@@ -1,0 +1,10 @@
+# for gui
+tkinter
+customtkinter
+ttkbootstrap
+pillow
+
+# for gesture recognition
+opencv-python
+pyautogui
+mediapipe
