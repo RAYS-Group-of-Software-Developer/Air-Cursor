@@ -50,6 +50,30 @@ if ($answer -ne "y") {
 }
 
 # push the changes to the remote repository
+# provide the list of branches and ask which branch to push to or create a new branch
+# allow user to navigate between branches useing the arrow keys
+# allow user to create and push a new branch
+
+# get the list of branches
+$branches = git branch
+
+# ask the user which branch to push to
+$branch = Read-Host "Enter the branch to push to"
+
+# if the branch does not exist, ask if it should be created
+if ($branches -notcontains $branch) {
+    $answer = Read-Host "Branch $branch does not exist. Create it? (y/n)"
+    if ($answer -eq "y") {
+        git checkout -b $branch
+    }
+    else {
+        exit
+    }
+}
+
+
+
+
 git push -u origin main
 
 # confirm that the files have been pushed
