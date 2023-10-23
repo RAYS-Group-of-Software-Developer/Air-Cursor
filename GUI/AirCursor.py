@@ -1,17 +1,13 @@
-import tkinter as tk
-from typing import Optional, Tuple, Union
+import time
+from typing import Tuple
 import customtkinter as ctk
 import ttkbootstrap as ttkbs
 from PIL import Image, ImageTk
 import os
-from ctypes import windll
-from random import randint,choice
-import emoji
-
-#  global variables
+from random import choice
 
 
-class Splash_Frame(ctk.CTkFrame):
+class SplashFrame(ctk.CTkFrame):
     def __init__(
         self,
         master: any,
@@ -24,44 +20,6 @@ class Splash_Frame(ctk.CTkFrame):
         border_color: str | Tuple[str, str] | None = None,
         background_corner_colors: Tuple[str | Tuple[str, str]] | None = None,
         overwrite_preferred_drawing_method: str | None = None,
-        gif_path: str = None,  # path to gif
-        **kwargs,
-    ):
-        super().__init__(
-            master,
-            width,
-            height,
-            corner_radius,
-            border_width,
-            bg_color,
-            fg_color,
-            border_color,
-            background_corner_colors,
-            overwrite_preferred_drawing_method,
-            gif_path,
-            **kwargs,
-        )
-
-
-class Titlebar(ctk.CTkFrame):
-    def __init__(
-        self,
-        master: any,
-        width: int = 200,
-        height: int = 200,
-        corner_radius: int | str | None = None,
-        border_width: int | str | None = None,
-        bg_color: str | Tuple[str, str] = "transparent",
-        fg_color: str | Tuple[str, str] | None = None,
-        border_color: str | Tuple[str, str] | None = None,
-        background_corner_colors: Tuple[str | Tuple[str, str]] | None = None,
-        overwrite_preferred_drawing_method: str | None = None,
-        App_title: str = "Air Cursor",  # title of app
-        # iconPath: str = None,  # path to icon
-        titleBarColor: str = "black",  # color of titlebar
-        # jsutify: str = None,  # left, center, right
-        style: str = None,  # style of titlebar -> "mac", "windows"
-        resizeable: bool = True,  # resizeable window
         **kwargs,
     ):
         super().__init__(
@@ -78,160 +36,58 @@ class Titlebar(ctk.CTkFrame):
             **kwargs,
         )
 
-        self.parent = master
-        print("self.parent" + str(self.parent))
+        self.main_frame = self
+        # self.main_frame.config(bg = "black")
+        self.main_frame.pack(expand=True, fill="both")
+        self.main_frame.columnconfigure(0, weight=1)
+        self.main_frame.rowconfigure(0, weight=1)
+        self.create_wdgets()
 
-        # layout
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(0, weight=1)
-        self.resizeable = resizeable
-        transparent_color = self._apply_appearance_mode(["#f2f2f2", "#000001"])
-        self.titlebar_color = titleBarColor
-
-        # titlebar
-        self.App_title = App_title
-        self.title_label = ctk.CTkLabel(
-            self,
-            width=10,
-            # image=self.icon,
-            compound="left",
-            text=f"  {self.App_title}",
-            anchor="n",
-            font=("Segoe UI", 20, "bold"),
+    def create_wdgets(self):
+        self.label_gif1 = ctk.CTkLabel(
+            self.main_frame, bg_color="transparent", fg_color="white", text=""
         )
-        self.title_label.grid(row=0, sticky="we", padx=(30, 0), pady=7)
 
-        self.title_label.bind("<ButtonPress-1>", self.parent.oldxyset)
-        self.title_label._label.bind("<ButtonPress-1>", self.parent.oldxyset)
-        self.title_label.bind("<B1-Motion>", self.parent.move_window)
-        self.title_label._label.bind("<B1-Motion>", self.parent.move_window)
-        self.title_label.bind(
-            "<Double-1>", lambda event: self.parent.max_window())
+        self.label_gif1.grid(row=0, column=0, sticky="nsew")
 
-        if self.resizeable == True:
-            self.parent.bind("<Motion>", self.parent.change_cursor)
-            self.parent.bind("<B1-Motion>", self.parent.resize)
-            max_button_color = "yellow"
-            hover_color = "#ffda71"
-        else:
-            max_button_color = "grey60"
-            hover_color = "grey60"
+        workspace = os.path.dirname(__file__)
+        assets = os.path.join(workspace, "Assets")
+        Splash_Animation = os.path.join(assets, "Splash_Animation")
+        # Spikes = os.path.join(assets, "Spikes.mp4")
+        # Tony = os.path.join(assets, "tony-stark-iron-man.gif")
+        Rain_gif = os.path.join(Splash_Animation, "rain_giphy.gif")
 
-        # titlebar buttons -> close, minimize, maximize
-        if style == "mac":
-            self.button_close = ctk.CTkButton(
-                self,
-                corner_radius=10,
-                width=10,
-                height=10,
-                text="",
-                hover_color="dark red",
-                fg_color="red",
-                command=lambda: self.parent.destroy(),
-            )
-            self.button_close.grid(
-                row=0, column=2, sticky="ne", padx=(0, 15), pady=10)
-            self.button_close.configure(cursor="arrow")
+        self.gif1_frames = self._get_frames(Rain_gif)
 
-            self.button_max = ctk.CTkButton(
-                self,
-                corner_radius=10,
-                width=10,
-                height=10,
-                text="",
-                hover_color=hover_color,
-                fg_color=max_button_color,
-                command=lambda: print("maximize"),
-            )
-            self.button_max.grid(
-                row=0, column=1, sticky="ne", padx=10, pady=10)
-            self.button_max.configure(cursor="arrow")
+        # self.label_gif1.configure(image = self.gif1_frames[12])
 
-            self.button_min = ctk.CTkButton(
-                self,
-                corner_radius=10,
-                width=10,
-                height=10,
-                text="",
-                hover_color="light green",
-                fg_color="green",
-                command=lambda: print("minimize"),
-            )
-            self.button_min.grid(row=0, column=0, sticky="ne", pady=10)
-            self.button_min.configure(cursor="arrow")
-        else:
-            self.button_close = ctk.CTkButton(
-                self,
-                corner_radius=10,
-                width=40,
-                height=30,
-                text="✕",
-                hover_color="#c42b1c",
-                fg_color="transparent",
-                text_color=["black", "white"],
-                background_corner_colors=(None, transparent_color, None, None),
-                command=self.parent.close_window,
-            )
-            self.button_close.grid(
-                row=0, column=2, sticky="ne", padx=0, pady=0)
-            self.button_close.configure(cursor="arrow")
-            self.button_close.bind(
-                "<Enter>", lambda e: self.change_bg(transparent_color, 1), add="+"
-            )
-            self.button_close.bind(
-                "<Leave>", lambda e: self.change_bg(transparent_color, 0), add="+"
-            )
+        # self.play_gif(self.gif1_frames, self.label_gif1)
 
-            self.button_max = ctk.CTkButton(
-                self,
-                corner_radius=0,
-                width=40,
-                height=30,
-                text="□",
-                text_color=["black", "white"],
-                hover_color="#2d2d2d",
-                fg_color="transparent",
-                command=self.parent.max_window,
-            )
-            self.button_max.grid(row=0, column=1, sticky="ne", padx=0, pady=0)
-            self.button_max.configure(cursor="arrow")
+        self.master.after(
+            1000, lambda: self.play_gif(self.gif1_frames, self.label_gif1)
+        )
 
-            self.button_min = ctk.CTkButton(
-                self,
-                corner_radius=0,
-                width=40,
-                height=30,
-                text="—",
-                text_color=["black", "white"],
-                hover_color="#2d2d2d",
-                fg_color="transparent",
-                command=self.parent.min_window,
-            )
-            self.button_min.grid(row=0, column=0, sticky="ne", pady=0)
-            self.button_min.configure(cursor="arrow")
+    def _get_frames(self, img):
+        with Image.open(img) as gif:
+            index = 0
+            frames = []
+            while True:
+                try:
+                    gif.seek(index)
+                    frame = ctk.CTkImage(
+                        light_image=gif.copy(), dark_image=gif.copy(), size=(600, 400)
+                    )
+                    frames.append(frame)
+                except EOFError:
+                    break
+                index += 1
+        return frames
 
-    ################# functions #################
-    def change_bg(self, transparent_color, hover):
-        if hover:
-            self.button_close.configure(
-                background_corner_colors=(
-                    "#c42b1c",
-                    transparent_color,
-                    "#c42b1c",
-                    "#c42b1c",
-                ),
-                fg_color="#c42b1c",
-            )
-        else:
-            self.button_close.configure(
-                background_corner_colors=(
-                    self.titlebar_color,
-                    transparent_color,
-                    self.titlebar_color,
-                    self.titlebar_color,
-                ),
-                fg_color=self.titlebar_color,
-            )
+    def play_gif(self, frames, label, delay=0.04):
+        for frame in frames:
+            label.configure(image=frame)
+            label.update()
+            time.sleep(delay)
 
 
 class Base(ctk.CTkFrame):
@@ -266,48 +122,52 @@ class Base(ctk.CTkFrame):
         # layout
         # self.grid_columnconfigure((0, 1, 2, 3), weight=1)
         # self.grid_rowconfigure((0, 1, 2, 3, 4), weight=1)
-        
-        self.dark_background_image = ctk.CTkImage(Image.open("C:\\Users\\user\\OneDrive - iitr.ac.in\\##Projects\\Air-Cursor\\GUI\\assets\\Backgrounds\\Dark_Theme\\Dark_sky.jpg").resize((int(self.winfo_width()), int(self.winfo_height()))))
-        self.light_background_image = ctk.CTkImage(Image.open("C:\\Users\\user\\OneDrive - iitr.ac.in\\##Projects\\Air-Cursor\\GUI\\assets\\Backgrounds\\Light_Theme\\Light_sky.jpg").resize((int(self.winfo_width()), int(self.winfo_height()))))
-        self.background_image_label = ctk.CTkLabel(self, image=self.dark_background_image, corner_radius=10)
+
+        # self.dark_background_image = ctk.CTkImage(Image.open("C:\\Users\\user\\OneDrive - iitr.ac.in\\##Projects\\Air-Cursor\\GUI\\assets\\Backgrounds\\Dark_Theme\\Dark_sky.jpg").resize((int(self.winfo_width()), int(self.winfo_height()))))
+        # self.light_background_image = ctk.CTkImage(Image.open("C:\\Users\\user\\OneDrive - iitr.ac.in\\##Projects\\Air-Cursor\\GUI\\assets\\Backgrounds\\Light_Theme\\Light_sky.jpg").resize((int(self.winfo_width()), int(self.winfo_height()))))
+        # self.background_image_label = ctk.CTkLabel(self, image=self.dark_background_image, corner_radius=10)
         # self.background_image_label.place(relx=0.5, rely=0.5, relwidth=1, relheight=1, anchor="center")
         # self.background_image_label.pack(expand=True, fill="both")
-        
 
-        self.Configure_widget = self.create_configure_widget()
-        self.Help_widget = self.create_help_widget()
-        self.About_us_widget = self.create_About_us_widget()
-        self.Lauch_widget = self.create_launch_widget()
-        self.Tips_widget = self.create_tips_widget()
-
-        self.Configure_widget.place(x=1,rely=0.01,relwidth=0.25,relheight=0.39, anchor="nw")
-        self.Help_widget.place(x=1,rely=0.44,relwidth=0.25,relheight=0.38, anchor="nw")
-        self.About_us_widget.place(x=1,rely=0.86,relwidth=0.25,relheight=0.13304, anchor="nw")
-        
-        self.Lauch_widget.place(relx=0.28,rely=0.01,relwidth=0.72,relheight=0.39, anchor="nw")
-        self.Tips_widget.place(relx=0.28,rely=0.44,relwidth=0.73,relheight=0.55, anchor="nw")
-        
         # set background image
         # self.dark_background_image = ImageTk.PhotoImage(Image.open("C:\\Users\\user\\OneDrive - iitr.ac.in\\##Projects\\Air-Cursor\\GUI\\assets\\Backgrounds\\Dark_Theme\\Dark_sky.jpg").resize(500,500))
         # self.light_background_image = ImageTk.PhotoImage(Image.open("C:\\Users\\user\\OneDrive - iitr.ac.in\\##Projects\\Air-Cursor\\GUI\\assets\\Backgrounds\\Light_Theme\\Light_sky.jpg").resize((int(self.winfo_width()), int(self.winfo_height()))))
         # self.background_image = self.dark_background_image
         # self.background_image_label = ctk.CTkLabel(self, image=self.background_image, corner_radius=10)
-        
-        
-        # Create widgets
+
+        self._create_base_frame()
+        # self._place_base_frame()
+
+        # self.Configure_widget = self.create_configure_widget()
+        # self.Help_widget = self.create_help_widget()
+        # self.About_us_widget = self.create_About_us_widget()v
+        # self.Lauch_widget = self.create_launch_widget()
+        # self.Tips_widget = self.create_tips_widget()
 
     def create_configure_widget(self):
         configure_widget = ctk.CTkFrame(
-            self, 
-            bg_color="transparent", 
-            # fg_color="", 
-            corner_radius=10
+            self,
+            bg_color="transparent",
+            # fg_color="",
+            corner_radius=10,
         )
-        
+
         # a label and a button
-        label = ctk.CTkLabel(configure_widget, text="Stable and Reliable\nExperience", font=("Segoe UI", 20, "bold"), corner_radius=10)
-        label.place(relx=0.5, rely= 0.33, relwidth=0.95,relheight=0.5 , anchor="center")
-        button = ctk.CTkButton(configure_widget, text="Configure", font=("Segoe UI", 20, "bold"), corner_radius=50, fg_color="#000001", command= self.configure_button_click)
+        label = ctk.CTkLabel(
+            configure_widget,
+            text="Stable and Reliable\nExperience",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+        )
+        label.place(relx=0.5, rely=0.33, relwidth=0.95, relheight=0.5, anchor="center")
+        button = ctk.CTkButton(
+            configure_widget,
+            text="Configure",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=50,
+            fg_color="#000001",
+            command=self.configure_button_click,
+        )
         button.place(relx=0.5, rely=0.8, relwidth=0.8, relheight=0.33, anchor="center")
         return configure_widget
 
@@ -316,58 +176,119 @@ class Base(ctk.CTkFrame):
 
     def create_help_widget(self):
         help_widget = ctk.CTkFrame(
-            self, 
-            bg_color="transparent", 
-            # fg_color="", 
-            corner_radius=10
+            self,
+            bg_color="transparent",
+            # fg_color="",
+            corner_radius=10,
         )
-        
+
         # a label and a button
-        label = ctk.CTkLabel(help_widget, text="Support and Query", font=("Segoe UI", 20, "bold"), corner_radius=10)
-        label.place(relx=0.5, rely= 0.33, relwidth=0.95,relheight=0.66 , anchor="center")
-        button = ctk.CTkButton(help_widget, text="Help", font=("Segoe UI", 20, "bold"), corner_radius=50, fg_color="#000001", command= self.help_button_click)
+        label = ctk.CTkLabel(
+            help_widget,
+            text="Support and Query",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+        )
+        label.place(relx=0.5, rely=0.33, relwidth=0.95, relheight=0.66, anchor="center")
+        button = ctk.CTkButton(
+            help_widget,
+            text="Help",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=50,
+            fg_color="#000001",
+            command=self.help_button_click,
+        )
         button.place(relx=0.5, rely=0.8, relwidth=0.8, relheight=0.33, anchor="center")
         return help_widget
 
     def create_About_us_widget(self):
         About_us_widget = ctk.CTkFrame(
-            self, 
-            bg_color="#000001", 
+            self,
+            bg_color="#000001",
             fg_color="#000001",
-            # fg_color="", 
-            corner_radius=10
+            # fg_color="",
+            corner_radius=10,
         )
         # only a button
-        ctk.CTkButton(About_us_widget, text="About us", font=("Segoe UI", 20, "bold"), corner_radius=10, fg_color="#000001", border_color="white", border_width=1, command=self.about_us_button_click).pack(expand=True, fill="both")
+        ctk.CTkButton(
+            About_us_widget,
+            text="About us",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+            fg_color="#000001",
+            border_color="white",
+            border_width=1,
+            command=self.about_us_button_click,
+        ).pack(expand=True, fill="both")
         return About_us_widget
 
     def create_launch_widget(self):
         Lauch_widget = ctk.CTkFrame(
-            self, 
-            bg_color="transparent", 
-            # fg_color="red", 
-            corner_radius=10
+            self,
+            bg_color="transparent",
+            # fg_color="red",
+            corner_radius=10,
         )
-        
-        label_frame = ctk.CTkFrame(Lauch_widget, bg_color="transparent", fg_color="transparent", corner_radius=10)
-        button_frame = ctk.CTkFrame(Lauch_widget, bg_color="transparent", fg_color="transparent", corner_radius=10)
-        
+
         """
             Label Frame takes 2/3 of the height
             Button Frame takes 1/3 of the height
         """
-        label_frame.place(relx=0.5, rely= 0.34, relwidth=0.95,relheight=0.66 , anchor="center")
-        button_frame.place(relx=0.5, rely=0.81, relwidth=0.95, relheight=0.31, anchor="center")
-        
-        catchphrases = ("Move it like you own it", "You have magic hands.\nTry moving them", "Magic in the air")
-        
-        
-            
-        
+
+        # background image
+        imgPath = os.path.join(
+            os.path.dirname(__file__), "Assets", "Backgrounds", "Launch_bg.jpg"
+        )
+        img = Image.open(imgPath)
+        img_obj = ctk.CTkImage(dark_image=img, light_image=img, size=(800, 200))
+        # self.img_label = ctk.CTkLabel(Lauch_widget, image=img_obj, text="", corner_radius=10)
+        # self.img_label.place(relx=0.5, rely=0.5, relwidth=0.99, relheight=0.99, anchor="center")
+
+        # self._canvas = ctk.CTkCanvas(Lauch_widget)
+        # self._canvas.place(relx=0.5, rely=0.5, relwidth=1, relheight=1, anchor="center")
+        # self._canvas.create_image(0, 0, image=img, anchor="nw")
+
+        # create frames
+
+        label_frame = ctk.CTkFrame(
+            Lauch_widget,
+            bg_color="transparent",
+            fg_color="transparent",
+            corner_radius=10,
+        )
+        button_frame = ctk.CTkFrame(
+            Lauch_widget,
+            bg_color="transparent",
+            fg_color="transparent",
+            corner_radius=10,
+        )
+
+        # place frames
+        label_frame.place(
+            relx=0.5, rely=0.34, relwidth=0.95, relheight=0.66, anchor="center"
+        )
+        button_frame.place(
+            relx=0.5, rely=0.81, relwidth=0.95, relheight=0.31, anchor="center"
+        )
+
+        catchphrases = (
+            "Move it like you own it",
+            "You have magic hands.\nTry moving them",
+            "Magic in the air",
+        )
         # label frame contains a cachphrase about the app -> "Move it like you own it"
-        catchphrase_label = ctk.CTkLabel(label_frame, text="Move it like you own it", font=("Segoe UI", 50, "bold", "italic"), corner_radius=10)
-        catchphrase_label.pack(side="left")
-        
+        catchphrase_label = ctk.CTkLabel(
+            label_frame,
+            text="Move it like you own it",
+            font=("Segoe UI", 50, "bold", "italic"),
+            corner_radius=10,
+            fg_color="#000001",
+            bg_color="transparent",
+            image=img_obj,
+            text_color="gold",
+        )
+        catchphrase_label.pack(expand=True, fill="both")
+
         def update_catcphrase():
             while True:
                 new_catchphrase = choice(catchphrases)
@@ -375,47 +296,98 @@ class Base(ctk.CTkFrame):
                     break
             catchphrase_label.configure(text=new_catchphrase)
             self.after(3000, update_catcphrase)
-        
+
         update_catcphrase()
-        
+
         # button frame contains two buttons
-        launch_button = ctk.CTkButton(button_frame, text="Launch", font=("Segoe UI", 20, "bold"), corner_radius=10, fg_color="#000001", border_color="white", border_width=1, command=self.launch_button_click)
-        stop_button = ctk.CTkButton(button_frame, text="Stop", font=("Segoe UI", 20, "bold"), corner_radius=10, fg_color="#000001", border_color="white", border_width=1, command=self.stop_button_click)
-        
-        launch_button.place(relx=0.45, rely=0.1, relwidth=0.25, relheight=0.89, anchor="nw")
-        stop_button.place(relx=0.75, rely=0.1, relwidth=0.25, relheight=0.89, anchor="nw")
-        
+        launch_button = ctk.CTkButton(
+            button_frame,
+            text="Launch",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+            fg_color="#000001",
+            border_color="white",
+            border_width=1,
+            command=self.launch_button_click,
+        )
+        stop_button = ctk.CTkButton(
+            button_frame,
+            text="Stop",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+            fg_color="#000001",
+            border_color="white",
+            border_width=1,
+            command=self.stop_button_click,
+        )
+
+        launch_button.place(
+            relx=0.45, rely=0.1, relwidth=0.25, relheight=0.89, anchor="nw"
+        )
+        stop_button.place(
+            relx=0.75, rely=0.1, relwidth=0.25, relheight=0.89, anchor="nw"
+        )
 
         return Lauch_widget
 
     def create_tips_widget(self):
         Tips_widget = ctk.CTkFrame(
-            self, 
-            bg_color="transparent", 
-            fg_color="transparent", 
-            corner_radius=10
+            self, bg_color="transparent", fg_color="transparent", corner_radius=10
         )
-        tips = ("You need tips! Noob 😁", "Do something you lazy 🤨", "CG kitna hai tera? 🤭", "Chinta mat kar,\nbandi nahi milegi 😁")
+        tips = (
+            "You need tips! Noob 😁",
+            "Do something you lazy 🤨",
+            "CG kitna hai tera? 🤭",
+            "Chinta mat kar,\nbandi nahi milegi 😁",
+        )
         """
             Layout: <button> <tips_content> <button>
             the left button is for previous tip and the right button is for next tip
         """
         # what is the default frame color in dark mode in customtkinter?
-        
-        
-        left_button = ctk.CTkButton(Tips_widget, text="<", font=("Segoe UI", 20, "bold"), corner_radius=20, fg_color="#2b2b2b", hover_color="#000001", command= lambda : previous_tip())
-        right_button = ctk.CTkButton(Tips_widget, text=">", font=("Segoe UI", 20, "bold"), corner_radius=20, fg_color="#2b2b2b", hover_color="#000001", command= lambda: next_tip())
+
+        left_button = ctk.CTkButton(
+            Tips_widget,
+            text="<",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=20,
+            fg_color="#2b2b2b",
+            hover_color="#000001",
+            command=lambda: previous_tip(),
+        )
+        right_button = ctk.CTkButton(
+            Tips_widget,
+            text=">",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=20,
+            fg_color="#2b2b2b",
+            hover_color="#000001",
+            command=lambda: next_tip(),
+        )
         # left_button.place(relx=0.01, rely=0.01, relwidth=0.1, relheight=0.98, anchor="nw")
         # right_button.place(relx=0.89, rely=0.01, relwidth=0.1, relheight=0.98, anchor="nw")
         left_button.place(relx=0, rely=0.0, relwidth=0.1, relheight=1, anchor="nw")
-        right_button.place(relx=0.885, rely=0.0, relwidth=0.1, relheight=1, anchor="nw")
-        
+        right_button.place(relx=0.9, rely=0.0, relwidth=0.1, relheight=1, anchor="nw")
+
         tip = tips[0]
-        tips_content = ctk.CTkFrame(Tips_widget, bg_color="transparent", fg_color="transparent", corner_radius=10)
-        tips_content.place(relx=0.12, rely=0.01, relwidth=0.76, relheight=0.97, anchor="nw")
-        tip_label = ctk.CTkLabel(tips_content, text=tip, font=("Segoe UI", 30, "bold"), corner_radius=10, text_color="gold")
+        tips_content = ctk.CTkFrame(
+            Tips_widget,
+            bg_color="transparent",
+            fg_color="transparent",
+            corner_radius=10,
+        )
+        tips_content.place(
+            relx=0.12, rely=0.01, relwidth=0.76, relheight=0.97, anchor="nw"
+        )
+        tip_label = ctk.CTkLabel(
+            tips_content,
+            text=tip,
+            font=("Segoe UI", 30, "bold"),
+            corner_radius=10,
+            text_color="gold",
+        )
         tip_label.pack(expand=True, fill="both")
-        
+
         def previous_tip():
             # change the tip
             while True:
@@ -423,41 +395,279 @@ class Base(ctk.CTkFrame):
                 if tip != tip_label.cget("text"):
                     break
             tip_label.configure(text=tip)
-        
+
         def next_tip():
             while True:
                 tip = choice(tips)
                 if tip != tip_label.cget("text"):
                     break
             tip_label.configure(text=tip)
-        
+
         return Tips_widget
-    
+
+    def _create_base_frame(self):
+        self.Configure_widget = self.create_configure_widget()
+        self.Help_widget = self.create_help_widget()
+        self.About_us_widget = self.create_About_us_widget()
+        self.Lauch_widget = self.create_launch_widget()
+        self.Tips_widget = self.create_tips_widget()
+
+        self.Configure_widget.place(
+            x=1, rely=0.01, relwidth=0.25, relheight=0.39, anchor="nw"
+        )
+        self.Help_widget.place(
+            x=1, rely=0.44, relwidth=0.25, relheight=0.38, anchor="nw"
+        )
+        self.About_us_widget.place(
+            x=1, rely=0.86, relwidth=0.25, relheight=0.13304, anchor="nw"
+        )
+
+        self.Lauch_widget.place(
+            relx=0.28, rely=0.01, relwidth=0.72, relheight=0.39, anchor="nw"
+        )
+        self.Tips_widget.place(
+            relx=0.28, rely=0.44, relwidth=0.72, relheight=0.55, anchor="nw"
+        )
+
+    def _create_congigure_page(self):
+        """
+        <Configure content>
+        <Save> <Back Button>
+
+        COnfigure content contains:
+            <Smoothneing factor slider>
+            <Cursor size slider>
+            <Choose camera>
+        """
+
+        # create a scrollable frame
+        self.Configure_Frame = ctk.CTkScrollableFrame(
+            self, bg_color="transparent", fg_color="transparent", corner_radius=10
+        )
+
+        # variables
+        self.smoothness_factor_1 = 5
+        self.smoothness_factor_2 = 5
+        self.camera_index = 0
+
+        # frame 1
+        frame1 = ctk.CTkFrame(
+            self.Configure_Frame,
+            bg_color="transparent",
+            fg_color="transparent",
+            corner_radius=10,
+        )
+
+        frame1.grid_rowconfigure(0, weight=1)
+        frame1.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
+
+        label1 = ctk.CTkLabel(
+            frame1,
+            text="Smoothness Factor 1",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+        )
+        slider1 = ctk.CTkSlider(
+            frame1,
+            orientation="horizontal",
+            corner_radius=10,
+            from_=0,
+            to=10,
+            number_of_steps=20,
+        )
+        slider1.set(self.smoothness_factor_1)
+        value_label1 = ctk.CTkLabel(
+            frame1,
+            text=(self.smoothness_factor_1),
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+        )
+
+        label1.grid(row=0, column=0, sticky="nsew")
+        slider1.grid(row=0, column=1, columnspan=3, sticky="nsew")
+        value_label1.grid(row=0, column=4, sticky="nsew")
+
+        # frame 2
+        frame2 = ctk.CTkFrame(
+            self.Configure_Frame,
+            bg_color="transparent",
+            fg_color="transparent",
+            corner_radius=10,
+        )
+        frame2.grid_rowconfigure(0, weight=1)
+        frame2.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
+
+        label2 = ctk.CTkLabel(
+            frame2,
+            text="Smoothness Factor 2",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+        )
+        slider2 = ctk.CTkSlider(
+            frame2,
+            orientation="horizontal",
+            corner_radius=10,
+            from_=0,
+            to=10,
+            number_of_steps=20,
+        )
+        slider2.set(self.smoothness_factor_2)
+        value_label2 = ctk.CTkLabel(
+            frame2,
+            text=(self.smoothness_factor_2),
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+        )
+
+        label2.grid(row=0, column=0, sticky="nsew")
+        slider2.grid(row=0, column=1, columnspan=3, sticky="nsew")
+        value_label2.grid(row=0, column=4, sticky="nsew")
+
+        # frame 3
+        frame3 = ctk.CTkFrame(
+            self.Configure_Frame,
+            bg_color="transparent",
+            fg_color="transparent",
+            corner_radius=10,
+        )
+        frame3.grid_rowconfigure(0, weight=1)
+        frame3.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
+
+        label3 = ctk.CTkLabel(
+            frame3,
+            text="Choose Camera",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+        )
+        camera_list = ctk.CTkComboBox(
+            frame3,
+            hover=False,
+            values=("Camera 1", "Camera 2"),
+            corner_radius=10,
+            font=("Segoe UI", 20, "bold"),
+            fg_color="#000001",
+            border_color="white",
+            border_width=1,
+            command=lambda event: self.camera_list_selection(event, camera_list),
+        )
+
+        label3.grid(row=0, column=0, sticky="nsew")
+        camera_list.grid(row=0, column=1, columnspan=3, sticky="nsew")
+
+        # frame 4 (buttons): <Save> <Back Button>
+        frame4 = ctk.CTkFrame(
+            self,
+            bg_color="transparent",
+            fg_color="transparent",
+            corner_radius=10,
+            height=100,
+        )
+        frame4.grid_rowconfigure(0, weight=1)
+        frame4.grid_columnconfigure((0, 1), weight=1)
+
+        save_button = ctk.CTkButton(
+            frame4,
+            text="Save",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+            fg_color="#000001",
+            border_color="white",
+            border_width=1,
+            command=lambda: self._save_configuration(
+                smoothness_factor_1=self.smoothness_factor_1,
+                smoothness_factor_2=self.smoothness_factor_2,
+                camera_index=self.camera_index,
+            ),
+        )
+        back_button = ctk.CTkButton(
+            frame4,
+            text="Back",
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+            fg_color="#000001",
+            border_color="white",
+            border_width=1,
+            command=lambda: self._back_from_configure_page(),
+        )
+
+        save_button.grid(row=0, column=0, sticky="nsew", padx=10)
+        back_button.grid(row=0, column=1, sticky="nsew", padx=10)
+
+        # remove all the widgets from the base frame
+        for widget in self.winfo_children():
+            widget.place_forget()
+
+        self.Configure_Frame.place(
+            relx=0.5, rely=0.5, relwidth=1, relheight=1, anchor="center"
+        )
+        # place the frames
+        frame1.pack(expand=True, fill="both", pady=20)
+        frame2.pack(expand=True, fill="both", pady=20)
+        frame3.pack(expand=True, fill="both", pady=50)
+        frame4.place(rely=1, relwidth=0.95, anchor="sw")
+
+        # slider1.bind("<ButtonRelease-1>", lambda event: self.smoothness_factor_slider_release(event, slider1, value_label1, factor=1))
+        # slider2.bind("<ButtonRelease-1>", lambda event: self.smoothness_factor_slider_release(event, slider2, value_label2, factor=2))
+
+        slider1.configure(
+            command=lambda event: self.smoothness_factor_slider_release(
+                event, slider1, value_label1, factor=1
+            )
+        )
+        slider2.configure(
+            command=lambda event: self.smoothness_factor_slider_release(
+                event, slider2, value_label2, factor=2
+            )
+        )
+
+    def smoothness_factor_slider_release(self, event, slider, value_label, factor):
+        value = slider.get()
+        value_label.configure(text=value)
+        if factor == 1:
+            self.smoothness_factor_1 = value
+        elif factor == 2:
+            self.smoothness_factor_2 = value
+
+    def camera_list_selection(self, event, camera_list):
+        if camera_list.get() == "Camera 1":
+            self.camera_index = 0
+        elif camera_list.get() == "Camera 2":
+            self.camera_index = 1
+
     # button click functions
     def configure_button_click(self):
-        # self.Configure_widget.destroy()
-        # self.Configure_widget = self.create_configure_widget()
-        # self.Configure_widget.place(x=1,rely=0.01,relwidth=0.25,relheight=0.39, anchor="nw")
-        pass
-    
+        self._create_congigure_page()
+
+    def _save_configuration(
+        self, smoothness_factor_1, smoothness_factor_2, camera_index
+    ):
+        # save the configuration and go back to the base frame
+        self._back_from_configure_page()
+
+    def _back_from_configure_page(self):
+        # remove all the widgets from the base frame
+        for widget in self.winfo_children():
+            widget.place_forget()
+        self._create_base_frame()
+
     def help_button_click(self):
         # self.Help_widget.destroy()
         # self.Help_widget = self.create_help_widget()
         # self.Help_widget.place(x=1,rely=0.44,relwidth=0.25,relheight=0.38, anchor="nw")
         pass
-    
+
     def about_us_button_click(self):
         # self.About_us_widget.destroy()
         # self.About_us_widget = self.create_About_us_widget()
         # self.About_us_widget.place(x=1,rely=0.86,relwidth=0.25,relheight=0.13304, anchor="nw")
         pass
-    
+
     def launch_button_click(self):
         pass
-    
+
     def stop_button_click(self):
         pass
-    
+
 
 class MainWindow(ctk.CTk):
     def __init__(
@@ -470,169 +680,66 @@ class MainWindow(ctk.CTk):
         super().__init__(fg_color, **kwargs)
 
         # window settings
-        width = 950
-        height = int(width * 9 / 16)
-        self.geometry(f"{width}x{height}")
-        self.title("Air Cursor")
+        self.width = 600
+        self.height = 400
+        self.x = int((self.winfo_screenwidth() - self.width) // 2)
+        self.y = int((self.winfo_screenheight() - self.height) // 2)
         # self.overrideredirect(True)
-        self.resizable(resizeable, resizeable)
+        # self.resizable(resizeable, resizeable)
 
-        self.x = self.winfo_x()
-        self.y = self.winfo_y()
-        self.fullscreen = False
-        self.GWL_EXSTYLE = -20
-        self.WS_EX_APPWINDOW = 0x00040000
-        self.WS_EX_TOOLWINDOW = 0x00000080
-        self.minmize = False
+        # set icon
+        if iconPath:
+            self.iconbitmap(iconPath)
 
-        transparent_color = self._apply_appearance_mode(["white", "#000000"])
+        # set title
+        self.title("Air Cursor")
+
+        transparent_color = self._apply_appearance_mode(["white", "#000001"])
         # layout
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)  # 0 is titlebar, 1 is base
         self.grid_rowconfigure(1, weight=1)
 
         self.config(background=transparent_color)
-        # self.attributes(
-        #     "-transparentcolor", transparent_color
-        # )  # transparent_color will be the transparent color
 
-        # titlebar
-
-        # self.titlebar = Titlebar(
-        #     self,
-
-        #     height=title_height,
-        #     bg_color=("white", "black"),
-        #     fg_color=("white", "black"),
-        #     App_title="Air Cursor",
-        #     border_width=0,
-        #     corner_radius=10,
-        #     background_corner_colors=(transparent_color, transparent_color, None, None),
-        # )
-        # self.titlebar.grid(row=0, sticky="nwe")
-        
-        
-        # set background image
-        
-        
-        
+        # Splash Screen
+        # self.Splash_Frame = SplashFrame(self, width=600, height=400, bg_color="white", border_width=0, border_color="black", fg_color="black")
 
         # base frame
-        self.app = Base(
+        self.Base_Frame = Base(
             self,
-            bg_color=("white", "#000000"),
-            fg_color=("white", "#000000"),
+            bg_color=("white", "#000001"),
+            fg_color=("white", "#000001"),
             # border_width=0,
             corner_radius=10,
         )
 
-        # self.app.place(x=1,y=title_height, relwidth=1, relheight=1)
-        self.app.place(relx=0.5,rely=0.5, relwidth=0.97, relheight=0.97, anchor="center")
+        # self.Base_Frame.place(x=1,y=title_height, relwidth=1, relheight=1)
+        # self.Base_Frame.place(relx=0.5,rely=0.5, relwidth=0.97, relheight=0.97, anchor="center")
         # self.app.bind("<Map>", self.frame_mapped)
 
-    ######## titlebar functions ########
-    def geometry(self, geometry):
-        super().geometry(geometry)
+        # self.show_splash()
+        # self.update()
+        # self.after(5640, self.show_main)
+        self.show_main()
 
-    # def iconbitmap(self, icon):
-    #     self.icon = customtkinter.CTkImage(Image.open(icon), size=(16, 16))
-    #     self.title_label.configure(image=self.icon)
-
-    def oldxyset(self, event):
-        self.oldx = event.x
-        self.oldy = event.y
-
-    def close_window(self):
-        super().destroy()
-
-    def move_window(self, event):
-        if self.fullscreen == False:
-            self.y = event.y_root - self.oldy
-            self.x = event.x_root - self.oldx
-            self.geometry(f"+{self.x}+{self.y}")
-
-    def frame_mapped(self, e):
-        self.update_idletasks()
+    def show_splash(self):
+        # make the window appear on the top
+        self.attributes("-topmost", True)
         self.overrideredirect(True)
-        self.state("normal")
-        if self.minmize:
-            self.fullscreen = False
-            self.max_window()
-        self.minmize = False
+        self.geometry(f"{self.width}x{self.height}+{self.x}+{self.y}")
+        self.Splash_Frame.pack(expand=True, fill="both")
 
-    def min_window(self):
-        self.update_idletasks()
+    def show_main(self):
+        # self.Splash_Frame.pack_forget()
+        self.attributes("-topmost", False)
         self.overrideredirect(False)
-        self.withdraw()
-        self.state("iconic")
-        if self.fullscreen:
-            self.minmize = True
-        # self.overrideredirect(True)
-
-    def set_appwindow(self):
-        hwnd = windll.user32.GetParent(self.winfo_id())
-        style = windll.user32.GetWindowLongW(hwnd, self.GWL_EXSTYLE)
-        style = style & ~self.WS_EX_TOOLWINDOW
-        style = style | self.WS_EX_APPWINDOW
-        res = windll.user32.SetWindowLongW(hwnd, self.GWL_EXSTYLE, style)
-        self.wm_withdraw()
-        self.after(10, lambda: self.wm_deiconify())
-
-    def max_window(self):
-        if self.resizable == True:
-            if self.fullscreen == False:
-                self.update_idletasks()
-                self.overrideredirect(False)
-                self.wm_state("zoomed")
-                self.overrideredirect(True)
-                self.after(10, lambda: self.set_appwindow())
-                self.state("normal")
-                self.fullscreen = True
-                if self.style == "classic":
-                    self.button_max.configure(text="❒")
-            else:
-                self.geometry(f"+{self.x}+{self.y}")
-                self.fullscreen = False
-                if self.style == "classic":
-                    self.button_max.configure(text="□")
-
-    def change_cursor(self, event):
-        # the cursor will change when the mouse is in the range of 10 pixels from the edge of the window, the cursor will change to size_nw_se (diagonal)
-        if event.x in range(
-            self.app.winfo_width() - 10, self.app.winfo_width()
-        ) and event.y in range(self.app.winfo_height() - 10, self.app.winfo_height()):
-            self.config(cursor="size_nw_se")
-            return
-        else:
-            self.config(cursor="")
-
-        # the cursor will change when the mouse is in the range of 5 pixels from the edge of the window
-        if event.x in range(
-            self.app.winfo_width() - 5, self.app.winfo_width()
-        ) and event.y in range(0, self.app.winfo_height()):
-            self.config(cursor="sb_h_double_arrow")
-            return
-        else:
-            self.config(cursor="")
-
-        if event.x in range(0, self.app.winfo_width()) and event.y in range(
-            self.app.winfo_height() - 5, self.app.winfo_height()
-        ):
-            self.config(cursor="sb_v_double_arrow")
-            return
-        else:
-            self.config(cursor="")
-
-    def resize(self, event):
-        if self.cget("cursor") == "size_nw_se":
-            if event.x > 100 and event.y > 100:
-                self.geometry(
-                    f"{event.x_root - self.x}x{event.y_root - self.y}")
-        elif self.cget("cursor") == "sb_h_double_arrow":
-            self.geometry(f"{event.x_root - self.x}x{self.winfo_height()}")
-        elif self.cget("cursor") == "sb_v_double_arrow":
-            self.geometry(f"{self.winfo_width()}x{event.y_root - self.y}")
-
+        self.width = 1000
+        self.height = int(self.width * 9 / 16)
+        self.geometry(f"{self.width}x{self.height}")
+        self.Base_Frame.place(
+            relx=0.5, rely=0.5, relwidth=0.97, relheight=0.97, anchor="center"
+        )
 
 
 #  run the app
