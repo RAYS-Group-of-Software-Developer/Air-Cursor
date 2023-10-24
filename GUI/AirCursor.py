@@ -1,6 +1,7 @@
 import time
 from typing import Tuple
 import customtkinter as ctk
+from tkinter import ttk
 import ttkbootstrap as ttkbs
 from PIL import Image, ImageTk
 import os
@@ -119,6 +120,8 @@ class Base(ctk.CTkFrame):
             **kwargs,
         )
 
+        self.assets_path = os.path.join(os.path.dirname(__file__), "assets")
+        
         # layout
         # self.grid_columnconfigure((0, 1, 2, 3), weight=1)
         # self.grid_rowconfigure((0, 1, 2, 3, 4), weight=1)
@@ -284,7 +287,7 @@ class Base(ctk.CTkFrame):
             corner_radius=10,
             fg_color="#000001",
             bg_color="transparent",
-            image=img_obj,
+            # image=img_obj,
             text_color="gold",
         )
         catchphrase_label.pack(expand=True, fill="both")
@@ -299,9 +302,17 @@ class Base(ctk.CTkFrame):
 
         update_catcphrase()
 
+        launch_img_path = os.path.join(self.assets_path,"Buttons", "launch_gradiant.png")
+        launch_img = ctk.CTkImage(
+            dark_image=Image.open(launch_img_path),
+            light_image=Image.open(launch_img_path),
+            size=(100,50),
+        )
+        
         # button frame contains two buttons
         launch_button = ctk.CTkButton(
             button_frame,
+            # image=launch_img,
             text="Launch",
             font=("Segoe UI", 20, "bold"),
             corner_radius=10,
@@ -405,6 +416,7 @@ class Base(ctk.CTkFrame):
 
         return Tips_widget
 
+    # ############## Create and place the base frame ################ #
     def _create_base_frame(self):
         self.Configure_widget = self.create_configure_widget()
         self.Help_widget = self.create_help_widget()
@@ -429,6 +441,7 @@ class Base(ctk.CTkFrame):
             relx=0.28, rely=0.44, relwidth=0.72, relheight=0.55, anchor="nw"
         )
 
+    # ############## Create and place the configure page ################ #
     def _create_congigure_page(self):
         """
         <Configure content>
@@ -442,7 +455,10 @@ class Base(ctk.CTkFrame):
 
         # create a scrollable frame
         self.Configure_Frame = ctk.CTkScrollableFrame(
-            self, bg_color="transparent", fg_color="transparent", corner_radius=10
+            self, 
+            bg_color="transparent", 
+            fg_color="transparent", 
+            corner_radius=10
         )
 
         # variables
@@ -569,6 +585,7 @@ class Base(ctk.CTkFrame):
             frame4,
             text="Save",
             font=("Segoe UI", 20, "bold"),
+            height=80,
             corner_radius=10,
             fg_color="#000001",
             border_color="white",
@@ -583,6 +600,7 @@ class Base(ctk.CTkFrame):
             frame4,
             text="Back",
             font=("Segoe UI", 20, "bold"),
+            height=80,
             corner_radius=10,
             fg_color="#000001",
             border_color="white",
@@ -634,7 +652,197 @@ class Base(ctk.CTkFrame):
         elif camera_list.get() == "Camera 2":
             self.camera_index = 1
 
+    # ############# Create and place the About us page ################ #
+    def _create_about_us_page(self):
+        """
+        <About us content>
+        <Back Button>
+        
+        About us content contains:
+            <Developers>
+            <Contributors>
+            <Contact us>
+        
+        There are 5 developers and no contributors, but we have mentioned the names of the people who helped us in the project.
+        Developers contains:
+            <Photo> <Name> <Email> <Github> <LinkedIn>
+        """
+        # create a scrollable frame
+        self.About_us_Frame = ctk.CTkScrollableFrame(
+            self, bg_color="transparent", fg_color="transparent", corner_radius=10
+        )
+        
+        Developers_img_path = os.path.join(os.path.dirname(__file__), "Assets", "Developers")
+        Panda_img_path = os.path.join(Developers_img_path, "Panda.jpg")
+        Souvik_img_path = os.path.join(Developers_img_path, "Souvik.jpg")
+        Sukhman_img_path = os.path.join(Developers_img_path, "Sukhman.jpg")
+        
+        
+        
+        # frame 1 -> developer 1 (Souvik)
+        souvik_frame = self.create_developer_frame(
+            self.About_us_Frame,
+            img_path=Panda_img_path,
+            name="Souvik Karmakar",
+            email="souvik_k@cs.iitr.ac.in",
+            github="https://github.com/souvik-13",
+            linkedin="https://www.linkedin.com/in/souvik-karmakar-888202257/",
+            side="left"
+        )
+        
+        # frame 2 -> developer 2 (Raman)
+        raman_frame = self.create_developer_frame(
+            self.About_us_Frame,
+            img_path=Panda_img_path,
+            name="Raman Sharma",
+            email="raman_s@cs.iitr.ac.in",
+            github="https://github.com/ramansharma829455",
+            linkedin="https://www.linkedin.com/in/raman-sharma-8294551b7/",
+            side="right"
+        )
+        
+        # frame 3 -> developer 3 (Yash)
+        yashwanth_frame = self.create_developer_frame(
+            self.About_us_Frame,
+            img_path=Panda_img_path,
+            name="Boda Yashwanth",
+            email="boda_y@cs.iitr.ac.in",
+            github="https://github.com/yashwanthboda",
+            linkedin="https://www.linkedin.com/in/yashwanth-boda-3a2a1b1b9/",
+            side="left"
+        )
+        
+        # frame 4 -> developer 4 (Sukhman)
+        sukhman_frame = self.create_developer_frame(
+            self.About_us_Frame,
+            img_path=Panda_img_path,
+            name="Sukhman Singh",
+            email="sukhman_s@cs.iitr.ac.in",
+            github="https://github.com/sukhman-sukh",
+            linkedin="https://www.linkedin.com/in/sukhman-singh-3a6a1b1b9/",
+            side="right"
+        )
+        # frame 5 -> developer 5 (Ayush)
+        ayush_frame = self.create_developer_frame(
+            self.About_us_Frame,
+            img_path=Panda_img_path,
+            name="Ayush Ranjan",
+            email="ayush_r@cs.iitr.ac.in",
+            github="https://github.com/ayushr100",
+            linkedin="https://www.linkedin.com/in/ayush-ranjan-3a6a1b1b9/",
+            side="left"
+        )
+        
+        self.back_button_image = ctk.CTkImage(
+            dark_image=Image.open(os.path.join(os.path.dirname(__file__), "Assets", "Buttons", "arrow_white.png")),
+            light_image=Image.open(os.path.join(os.path.dirname(__file__), "Assets", "Buttons", "arrow_black.png")),
+            size=(50, 50),
+        )
+        
+        # back button
+        back_button = ctk.CTkButton(
+            self,
+            text="",
+            image=self.back_button_image,
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+            fg_color="transparent",
+            bg_color="transparent",
+            # border_color="white",
+            # border_width=1,
+            command=lambda: self._back_from_about_us_page(),
+            height=50,
+            width=50,
+        )
+        
+        # remove all the widgets from the base frame
+        for widget in self.winfo_children():
+            widget.place_forget()
+            
+        # place the about us frame
+        back_button.place(relx=0.01, rely=0.01,  anchor="nw")
+        # self.About_us_Frame.place(relx=0.5, rely=0.5, relwidth=1, relheight=1, anchor="center")
+        self.About_us_Frame.place(x=50, y=50, relwidth=0.95, relheight=0.95, anchor="nw")
+        
+        # pack the frames
+        souvik_frame.pack(expand=True, fill="both", pady=20, padx=20)
+        raman_frame.pack(expand=True, fill="both", pady=20, padx=20)
+        yashwanth_frame.pack(expand=True, fill="both", pady=20, padx=20)
+        sukhman_frame.pack(expand=True, fill="both", pady=20, padx=20)
+        ayush_frame.pack(expand=True, fill="both", pady=20, padx=20)
+        
+
+    def create_developer_frame(self, parent, img_path, name, email, github, linkedin, side):
+        developer_frame = ctk.CTkFrame(
+            parent,
+            # bg_color="transparent",
+            # fg_color="transparent",
+            corner_radius=20,
+        )
+
+        developer_frame.grid_rowconfigure((0, 1, 2, 3), weight=1)
+        developer_frame.grid_columnconfigure((0, 1, 2), weight=1)
+
+        developer_photo = ctk.CTkImage(
+            dark_image=Image.open(img_path),
+            light_image=Image.open(img_path),
+            size=(200, 200),
+        )
+
+        developer_photo_label = ctk.CTkLabel(
+            developer_frame, 
+            image=developer_photo, 
+            corner_radius=10, 
+            text="",
+            fg_color="transparent",
+            bg_color="transparent"
+        )
+        developer_name_label = ctk.CTkLabel(
+            developer_frame,
+            text=name,
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+        )
+        developer_email_label = ctk.CTkLabel(
+            developer_frame,
+            text=email,
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+        )
+        developer_github_label = ctk.CTkLabel(
+            developer_frame,
+            text=github,
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+        )
+        developer_linkedin_label = ctk.CTkLabel(
+            developer_frame,
+            text=linkedin,
+            font=("Segoe UI", 20, "bold"),
+            corner_radius=10,
+        )
+
+        # place the widgets
+        if side == "left":
+            developer_photo_label.grid(row=0, column=0, rowspan=4, sticky="nswe")
+            developer_name_label.grid(row=0, column=1, columnspan=2, sticky="e", padx=50, pady=(20,0))
+            developer_email_label.grid(row=1, column=1, columnspan=2, sticky="e", padx=50)
+            developer_github_label.grid(row=2, column=1, columnspan=2, sticky="e", padx=50)
+            developer_linkedin_label.grid(row=3, column=1, columnspan=2, sticky="e", padx=50, pady=(0,20))
+        elif side == "right":
+            developer_photo_label.grid(row=0, column=3, rowspan=4, sticky="nswe")
+            developer_name_label.grid(row=0, column=0, columnspan=2, sticky="w",padx=50, pady=(20,0))
+            developer_email_label.grid(row=1, column=0, columnspan=2, sticky="w", padx=50)
+            developer_github_label.grid(row=2, column=0, columnspan=2, sticky="w", padx=50)
+            developer_linkedin_label.grid(row=3, column=0, columnspan=2, sticky="w", padx=50, pady=(0,20))
+            
+        
+        return developer_frame
+           
+    
     # button click functions
+    
+    # ############### Configure page button click functions ################ #
     def configure_button_click(self):
         self._create_congigure_page()
 
@@ -656,11 +864,15 @@ class Base(ctk.CTkFrame):
         # self.Help_widget.place(x=1,rely=0.44,relwidth=0.25,relheight=0.38, anchor="nw")
         pass
 
+    # ############### About us page button click functions ################ #
     def about_us_button_click(self):
-        # self.About_us_widget.destroy()
-        # self.About_us_widget = self.create_About_us_widget()
-        # self.About_us_widget.place(x=1,rely=0.86,relwidth=0.25,relheight=0.13304, anchor="nw")
-        pass
+        self._create_about_us_page()
+    
+    def _back_from_about_us_page(self):
+        # remove all the widgets from the base frame
+        for widget in self.winfo_children():
+            widget.place_forget()
+        self._create_base_frame()
 
     def launch_button_click(self):
         pass
