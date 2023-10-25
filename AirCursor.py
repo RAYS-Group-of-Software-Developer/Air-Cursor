@@ -1,11 +1,12 @@
-from __future__ import annotations
 import time
 from typing import Tuple
 import customtkinter as ctk
+from tkinter import ttk
+import ttkbootstrap as ttkbs
 from PIL import Image, ImageTk
 import os
 from random import choice
-
+import sys
 
 class SplashFrame(ctk.CTkFrame):
     def __init__(
@@ -297,7 +298,7 @@ class Base(ctk.CTkFrame):
                 if new_catchphrase != catchphrase_label.cget("text"):
                     break
             catchphrase_label.configure(text=new_catchphrase)
-            self.after(3000, update_catcphrase)
+            self.after(3000, update_catcphrase) 
 
         update_catcphrase()
 
@@ -316,7 +317,7 @@ class Base(ctk.CTkFrame):
             font=("Segoe UI", 20, "bold"),
             corner_radius=10,
             fg_color="#000001",
-            border_color="white",
+            border_color="white", 
             border_width=1,
             command=self.launch_button_click,
         )
@@ -493,7 +494,7 @@ class Base(ctk.CTkFrame):
         slider1.set(self.smoothness_factor_1)
         value_label1 = ctk.CTkLabel(
             frame1,
-            text=f"{self.smoothness_factor_1}",
+            text=(self.smoothness_factor_1),
             font=("Segoe UI", 20, "bold"),
             corner_radius=10,
         )
@@ -884,7 +885,6 @@ class Base(ctk.CTkFrame):
 
     def stop_button_click(self):
         sys.exit()
-
 
 
 class MainWindow(ctk.CTk):
