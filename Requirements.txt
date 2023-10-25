@@ -1,10 +1,11 @@
 # for gui
-# tkinter
-customtkinter
-ttkbootstrap
-pillow
+#python ver
+customtkinter==5.2.1
+ttkbootstrap==1.10.1
+pillow==10.1.0
 
 # for gesture recognition
-opencv-python
-pyautogui
-mediapipe
+opencv-python==4.8.1.78
+pyautogui==0.9.54
+mediapipe==0.10.7
+autopy==4.0.0

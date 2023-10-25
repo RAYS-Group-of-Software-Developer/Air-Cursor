@@ -1,8 +1,7 @@
+from __future__ import annotations
 import time
 from typing import Tuple
 import customtkinter as ctk
-from tkinter import ttk
-import ttkbootstrap as ttkbs
 from PIL import Image, ImageTk
 import os
 from random import choice
@@ -494,7 +493,7 @@ class Base(ctk.CTkFrame):
         slider1.set(self.smoothness_factor_1)
         value_label1 = ctk.CTkLabel(
             frame1,
-            text=(self.smoothness_factor_1),
+            text=f"{self.smoothness_factor_1}",
             font=("Segoe UI", 20, "bold"),
             corner_radius=10,
         )
