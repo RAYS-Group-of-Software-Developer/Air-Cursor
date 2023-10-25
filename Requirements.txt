@@ -1,5 +1,5 @@
 # for gui
-tkinter
+# tkinter
 customtkinter
 ttkbootstrap
 pillow
