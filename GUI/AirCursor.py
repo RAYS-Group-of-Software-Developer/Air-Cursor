@@ -875,10 +875,17 @@ class Base(ctk.CTkFrame):
         self._create_base_frame()
 
     def launch_button_click(self):
-        pass
+        # os.system("cd ./../")
+        os.chdir("..") 
+        print(os.getcwd())
+        os.system("echo \"sad\"")
+        os.system("python3 control.py")
+        # with open("C:\scripts\other.py") as f:
+        #     exec(f.read())
 
     def stop_button_click(self):
-        pass
+        sys.exit()
+
 
 
 class MainWindow(ctk.CTk):
