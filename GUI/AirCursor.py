@@ -24,7 +24,7 @@ def _get_frames(img):
             try:
                 gif.seek(index)
                 frame = ctk.CTkImage(
-                    light_image=gif.copy(), dark_image=gif.copy(), size=(600, 400)
+                    light_image=gif.copy(), dark_image=gif.copy(), size=(450, 300)
                 )
                 frames.append(frame)
             except EOFError:
@@ -33,7 +33,7 @@ def _get_frames(img):
     return frames
 
 
-def play_gif(frames, label, delay=0.04):
+def play_gif(frames, label, delay=0.005):
     for frame in frames:
         label.configure(image=frame)
         label.update()
@@ -89,9 +89,9 @@ class SplashFrame(ctk.CTkFrame):
         Splash_Animation = os.path.join(assets, "Splash_Animation")
         # Spikes = os.path.join(assets, "Spikes.mp4")
         # Tony = os.path.join(assets, "tony-stark-iron-man.gif")
-        Rain_gif = os.path.join(Splash_Animation, "rain_giphy.gif")
-
-        self.gif1_frames = _get_frames(Rain_gif)
+        # Rain_gif = os.path.join(Splash_Animation, "rain_giphy.gif")
+        air_animation = os.path.join(Splash_Animation, "air_animation.gif")
+        self.gif1_frames = _get_frames(air_animation)
 
         # self.label_gif1.configure(image = self.gif1_frames[12])
 
@@ -645,6 +645,12 @@ class Base(ctk.CTkFrame):
             # size=(width, height)
             size=(600, 400)
         )
+        tip_img_7 = ctk.CTkImage(
+            dark_image=Image.open(os.path.join(dark_tip_img_path, "cursor_move_dark.png")),
+            light_image=Image.open(os.path.join(light_tip_img_path, "cursor_move_light.png")),
+            # size=(width, height)
+            size=(600, 400)
+        )
 
         def reset_image_size(event):
             width = event.width * 0.70
@@ -656,13 +662,14 @@ class Base(ctk.CTkFrame):
             tip_img_4.configure(size=(width, height))
             tip_img_5.configure(size=(width, height))
             tip_img_6.configure(size=(width, height))
+            tip_img_7.configure(size=(width, height))
 
-        tips = [tip_img_1, tip_img_2, tip_img_3, tip_img_4, tip_img_5, tip_img_6]
+        tips = [tip_img_1, tip_img_2, tip_img_3, tip_img_4, tip_img_5, tip_img_6, tip_img_7]
         tip_label = ctk.CTkLabel(
             tips_content,
             # text=tip,
             text="",
-            image=tips[0],
+            image=tips[6],
             bg_color="transparent",
             fg_color="transparent",
             font=("Segoe UI", 30, "bold"),
@@ -1273,8 +1280,8 @@ class MainWindow(ctk.CTk):
         super().__init__(fg_color, **kwargs)
 
         # window settings
-        self.width = 600
-        self.height = 400
+        self.width = 450
+        self.height = 300
         self.x = int((self.winfo_screenwidth() - self.width) // 2)
         self.y = int((self.winfo_screenheight() - self.height) // 2)
         # self.overrideredirect(True)
@@ -1296,7 +1303,7 @@ class MainWindow(ctk.CTk):
         self.config(background=background_color)
 
         # Splash Screen
-        # self.Splash_Frame = SplashFrame(self, width=600, height=400, bg_color="white", border_width=0, border_color="black", fg_color="black")
+        self.Splash_Frame = SplashFrame(self, width=self.width, height=self.height, bg_color="white", border_width=0, border_color="black", fg_color="black")
 
         # base frame
         self.Base_Frame = Base(
@@ -1310,10 +1317,10 @@ class MainWindow(ctk.CTk):
             camera_index=0,
         )
 
-        # self.show_splash()
-        # self.update()
-        # self.after(5640, self.show_main)
-        self.show_main()
+        self.show_splash()
+        self.update()
+        self.after(7300, self.show_main)
+        # self.show_main()
 
     def show_splash(self):
         # make the window appear on the top
@@ -1323,7 +1330,7 @@ class MainWindow(ctk.CTk):
         self.Splash_Frame.pack(expand=True, fill="both")
 
     def show_main(self):
-        # self.Splash_Frame.pack_forget()
+        self.Splash_Frame.pack_forget()
         self.attributes("-topmost", False)
         self.overrideredirect(False)
         self.width = 1000

@@ -101,11 +101,11 @@ def main():
         success, img = cap.read()
         img = detector.findHands(img)
         lmList, bbox = detector.findPosition(img)
-        if len(lmList) != 0:
-            print(lmList[4])
+        # if len(lmList) != 0:
+        #     print(lmList[4])
         
-        if(detector.fingersUp()):
-            print(detector.fingersUp())
+        # if(detector.fingersUp()):
+        #     print(detector.fingersUp())
 
         cTime = time.time()
         fps = 1 / (cTime - pTime)

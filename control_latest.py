@@ -13,9 +13,13 @@ if __name__ == "__main__":
     screenWidth, screenHeight = autopy.screen.size()
     plocx, plocy = screenWidth / 2, screenHeight / 2
     clocx, clocy = screenWidth / 2, screenHeight / 2
-    smoothening = 7
+
+
+    smoothening_cursor_move = 7
     smoothening_scroll = 7
-    smoothening_vol = 5
+
+
+    smoothening_vol = 1
     cap = cv2.VideoCapture(0)
     detector = ht.handDetector()
     width = 640
@@ -52,8 +56,8 @@ if __name__ == "__main__":
                 if i == 1:
                     x = np.interp(x1, (frame, width - frame), (0, screenWidth))
                     y = np.interp(y1, (frameu, height - framed), (0, screenHeight))
-                    clocx = plocx + (x - plocx) / smoothening
-                    clocy = plocy + (y - plocy) / smoothening
+                    clocx = plocx + (x - plocx) / smoothening_cursor_move
+                    clocy = plocy + (y - plocy) / smoothening_cursor_move
                     # pt.moveTo(screenWidth - clocx,clocy)
                     autopy.mouse.move(screenWidth - clocx, clocy)
                     plocx, plocy = clocx, clocy
@@ -96,8 +100,8 @@ if __name__ == "__main__":
                 if i == 7 and drag_mode:
                     x = np.interp(x1, (frame, width - frame), (0, screenWidth))
                     y = np.interp(y1, (frameu, height - framed), (0, screenHeight))
-                    clocx = plocx + (x - plocx) / smoothening
-                    clocy = plocy + (y - plocy) / smoothening
+                    clocx = plocx + (x - plocx) / smoothening_cursor_move
+                    clocy = plocy + (y - plocy) / smoothening_cursor_move
                     # pt.moveTo(screenWidth - clocx, clocy)
                     autopy.mouse.move(screenWidth - clocx, clocy)
                     plocx, plocy = clocx, clocy
@@ -121,7 +125,7 @@ if __name__ == "__main__":
                         if(clocy - plocy>10 or clocy - plocy<-10):
                             pt.scroll(int(clocy - plocy) * 2)
 
-                            print(int(clocy - plocy) * 2)
+                            # print(int(clocy - plocy) * 2)
                         # autopy.mouse.scroll(int((clocy-plocy)*2))
                         plocx, plocy = clocx, clocy
 
@@ -133,7 +137,7 @@ if __name__ == "__main__":
                     scroll_mode = False
 
 
-                # -------------------------------------------For volume level-------------------------------
+                # ----------------------------------------For volume level-------------------------------
 
                 # if i == 6 and (not volume_mode):
                 #     volume_mode = True
@@ -167,6 +171,7 @@ if __name__ == "__main__":
                     # elif clocy > 2 * height / 3:
                     #     pt.press('volumedown')
                     if clocy <=  height:
+                        pt.press('volumeup')
                         pt.press('volumeup')
                     elif clocy > height :
                         pt.press('volumedown')
@@ -209,12 +214,14 @@ if __name__ == "__main__":
             cTime = time.time()
             fps = 1 / (cTime - pTime)
             pTime = cTime
-            cv2.putText(img_flip, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3,
+            cv2.putText(img_flip, "FPS : "+str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3,
                         (255, 0, 255), 3)
-            cv2.putText(img_flip, str(int(prev_event)), (20, 120), cv2.FONT_HERSHEY_PLAIN, 3,
-                        (200, 0, 0), 3)
+            # cv2.putText(img_flip, str(int(prev_event)), (20, 120), cv2.FONT_HERSHEY_PLAIN, 3, (200, 0, 0), 3)
 
-            cv2.imshow("Image", img_flip)
+            cv2.imshow("Camera feed", img_flip)
+
+            # ----------------------------------To stop the program-------------------------------------
+
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 

@@ -64,9 +64,9 @@ if __name__ == "__main__":
         # if len(lmList) != 0:
             # print(lmList[4])
         
-        if(detector.fingersUp()):
+        # if(detector.fingersUp()):
             # print(detector.fingersUp())
-            print(recognise(img,detector),end=" ")
+            # print(recognise(img,detector),end=" ")
             # i=recognise(img,detector)
 
         cTime = time.time()
