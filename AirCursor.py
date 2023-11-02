@@ -7,6 +7,9 @@ from PIL import Image, ImageTk
 import os
 from random import choice
 import sys
+from dotenv import load_dotenv
+
+load_dotenv('../.env')
 
 class SplashFrame(ctk.CTkFrame):
     def __init__(
@@ -850,6 +853,9 @@ class Base(ctk.CTkFrame):
         self, smoothness_factor_1, smoothness_factor_2, camera_index
     ):
         # save the configuration and go back to the base frame
+        os.environ['SF1']=smoothness_factor_1;
+        os.environ['SF2']=smoothness_factor_2;
+        os.environ['CAMERA_INDEX']=camera_index;
         self._back_from_configure_page()
 
     def _back_from_configure_page(self):

@@ -4,8 +4,13 @@ import pyautogui as pt
 import cv2
 import time
 import numpy as np
+import os
 
 if __name__ == "__main__":
+    smootheningFactor1 = os.environ.get('SF1')
+    smootheningFactor2 = os.environ.get('SF2')
+    cameraIndex = os.environ.get('CAMERA_INDEX')
+    print(smootheningFactor1,smootheningFactor2,cameraIndex)
     pTime = 0
     cTime = 0
     screenWidth, screenHeight = pt.size()
