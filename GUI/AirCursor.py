@@ -10,12 +10,6 @@ from random import choice
 import webbrowser
 
 
-# Configuration variables
-# global Smoothing_factor_1
-# global Smoothing_factor_2
-# global Camera_index
-
-
 def _get_frames(img):
     with Image.open(img) as gif:
         index = 0
@@ -87,22 +81,14 @@ class SplashFrame(ctk.CTkFrame):
         workspace = os.path.dirname(__file__)
         assets = os.path.join(workspace, "Assets")
         Splash_Animation = os.path.join(assets, "Splash_Animation")
-        # Spikes = os.path.join(assets, "Spikes.mp4")
-        # Tony = os.path.join(assets, "tony-stark-iron-man.gif")
-        # Rain_gif = os.path.join(Splash_Animation, "rain_giphy.gif")
         air_animation = os.path.join(Splash_Animation, "air_animation.gif")
         self.gif1_frames = _get_frames(air_animation)
-
-        # self.label_gif1.configure(image = self.gif1_frames[12])
-
-        # self.play_gif(self.gif1_frames, self.label_gif1)
-
         self.master.after(
             1000, lambda: play_gif(self.gif1_frames, self.label_gif1)
         )
 
 
-def create_developer_frame(parent, img_path, name, email, github, linkedin, instagram, phone, side):
+def create_developer_frame(parent, img_path, name, role, email, github, linkedin, instagram, phone, side):
     developer_frame = ctk.CTkFrame(
         parent,
         bg_color="transparent",
@@ -122,12 +108,12 @@ def create_developer_frame(parent, img_path, name, email, github, linkedin, inst
         height = event.height
 
     width = width * 0.70
-    height = width
+    # height = width
 
     developer_photo = ctk.CTkImage(
         dark_image=Image.open(img_path),
         light_image=Image.open(img_path),
-        size=(width, height),
+        size=(width, width),
     )
 
     brand_icons = os.path.join(os.path.dirname(__file__), "Assets", "Brand_icons")
@@ -248,20 +234,22 @@ def create_developer_frame(parent, img_path, name, email, github, linkedin, inst
     # place the widgets
     if side == "left":
         developer_photo_label.grid(row=0, column=0, rowspan=4, sticky="nsw", padx=20, pady=20)
-        developer_name_label.grid(row=0, column=2, rowspan=2, columnspan=5, sticky="n", padx=(20, 30), pady=(20, 0))
-        developer_email_label.grid(row=3, column=2, columnspan=1, sticky="", padx=(20, 5))
-        developer_github_label.grid(row=3, column=3, columnspan=1, sticky="", padx=(5, 5))
-        developer_linkedin_label.grid(row=3, column=4, columnspan=1, sticky="", padx=(5, 5))
-        developer_phone_label.grid(row=3, column=5, columnspan=1, sticky="", padx=(5, 5))
-        developer_instagram_label.grid(row=3, column=6, columnspan=1, sticky="", padx=(5, 20))
+        developer_name_label.grid(row=0, column=2, columnspan=5, sticky="n", padx=(50, 50), pady=(20, 0))
+        # developer_role_label.grid(row=1, column=2, rowspan=1, columnspan=5, sticky="nwe", padx=(50, 50), pady=(0, 0))
+        developer_email_label.grid(row=3, column=2, columnspan=1, sticky="n", padx=(20, 5), pady=(0, 10))
+        developer_github_label.grid(row=3, column=3, columnspan=1, sticky="n", padx=(5, 5), pady=(0, 10))
+        developer_linkedin_label.grid(row=3, column=4, columnspan=1, sticky="n", padx=(5, 5), pady=(0, 10))
+        developer_phone_label.grid(row=3, column=5, columnspan=1, sticky="n", padx=(5, 5), pady=(0, 10))
+        developer_instagram_label.grid(row=3, column=6, columnspan=1, sticky="n", padx=(5, 20), pady=(0, 10))
     elif side == "right":
         developer_photo_label.grid(row=0, column=6, rowspan=4, sticky="nse", padx=(50, 20), pady=20)
         developer_name_label.grid(row=0, column=0, columnspan=5, sticky="n", padx=50, pady=(20, 0))
-        developer_email_label.grid(row=3, column=0, columnspan=1, sticky="", padx=(20, 5))
-        developer_github_label.grid(row=3, column=1, columnspan=1, sticky="", padx=(5, 5))
-        developer_linkedin_label.grid(row=3, column=2, columnspan=1, sticky="", padx=(5, 5))
-        developer_phone_label.grid(row=3, column=3, columnspan=1, sticky="", padx=(5, 5))
-        developer_instagram_label.grid(row=3, column=4, columnspan=1, sticky="", padx=(5, 20))
+        # developer_role_label.grid(row=1, column=0, rowspan=1, columnspan=5, sticky="new", padx=50, pady=(0, 0))
+        developer_email_label.grid(row=3, column=0, columnspan=1, sticky="n", padx=(20, 5), pady=(0, 10))
+        developer_github_label.grid(row=3, column=1, columnspan=1, sticky="n", padx=(5, 5), pady=(0, 10))
+        developer_linkedin_label.grid(row=3, column=2, columnspan=1, sticky="n", padx=(5, 5), pady=(0, 10))
+        developer_phone_label.grid(row=3, column=3, columnspan=1, sticky="n", padx=(5, 5), pady=(0, 10))
+        developer_instagram_label.grid(row=3, column=4, columnspan=1, sticky="n", padx=(5, 20), pady=(0, 10))
 
     return developer_frame
 
@@ -1093,12 +1081,17 @@ class Base(ctk.CTkFrame):
             fg_color=("#89A6A6", "#2E4343"),
             corner_radius=10,
             font=("Segoe UI", 15),
+            activate_scrollbars=False,
+            height=350,
         )
         description.insert(
             "end",
-            "This project is developed as a part of the course CSN-232: Computer Architecture and Organisation. The "
-            "project is developed by a team of 5 members. The project is developed using Python and OpenCV. The "
-            "project is developed under the guidance of Dr. Pramod Kumar.",
+            "AIRCURSOR: A Hand Gesture Controlled App for Computer Functions\n"
+"Do you want to control your computer with just your hand gestures? Do you want to experience the convenience and fun of using your fingers, palm, and thumb to perform various functions like clicking, scrolling, volume control, and drag and drop? Do you want to help people who have difficulty using a mouse or keyboard due to physical disabilities or injuries? If yes, then AIRCURSOR is the app for you!\n"
+"AIRCURSOR is an app that uses a webcam to detect your hand movements and gestures and translates them into computer actions. You can use your hand to control the mouse pointer, left click, right click, scroll up and down, increase and decrease the volume, and drag and drop files or folders. You can also use voice commands to switch between windows or applications.\n"
+"AIRCURSOR is a project developed by a team of students under the guidance of Professor Sandeep Kumar and his teaching assistants. It is based on Python, OpenCV, and pyautogui libraries. It uses machine learning and computer vision techniques to recognize hand landmarks and gesture patterns.\n"
+"AIRCURSOR is a simple and innovative way to interact with your computer. It can make your work more efficient and fun. It can also help people who have difficulty using a mouse or keyboard due to physical disabilities or injuries.\n"
+"AIRCURSOR is the ultimate hand gesture controlled app for computer functions. Try it today and experience the magic of AIRCURSOR!\n",
         )
         description.configure(state="disabled")
 
@@ -1130,6 +1123,7 @@ class Base(ctk.CTkFrame):
             self.About_us_Frame,
             img_path=Souvik_img_path,
             name="Souvik Karmakar",
+            role="Team Leader",
             email="souvik_k@cs.iitr.ac.in",
             github="https://github.com/souvik-13",
             linkedin="https://www.linkedin.com/in/souvik-karmakar-888202257/",
@@ -1143,6 +1137,7 @@ class Base(ctk.CTkFrame):
             self.About_us_Frame,
             img_path=Raman_img_path,
             name="Raman Sharma",
+            role="Team Member",
             email="raman_s@cs.iitr.ac.in",
             github="https://github.com/ramansharma829455",
             linkedin="https://www.linkedin.com/in/raman-sharma-8294551b7/",
@@ -1156,6 +1151,7 @@ class Base(ctk.CTkFrame):
             self.About_us_Frame,
             img_path=Yashwanth_img_path,
             name="Boda Yashwanth",
+            role="Team Member",
             email="boda_y@cs.iitr.ac.in",
             github="https://github.com/yashwanthboda",
             linkedin="https://www.linkedin.com/in/yashwanth-boda-555224299/",
@@ -1169,6 +1165,7 @@ class Base(ctk.CTkFrame):
             self.About_us_Frame,
             img_path=Sukhman_img_path,
             name="Sukhman Singh",
+            role="Team Member",
             email="sukhman_s@cs.iitr.ac.in",
             github="https://github.com/sukhman-sukh",
             linkedin="https://www.linkedin.com/in/sukhman-singh-3a6a1b1b9/",
@@ -1181,6 +1178,7 @@ class Base(ctk.CTkFrame):
             self.About_us_Frame,
             img_path=Ayush_img_path,
             name="Ayush Ranjan",
+            role="Team Member",
             email="ayush_r@cs.iitr.ac.in",
             github="https://github.com/ayushr100",
             linkedin="https://www.linkedin.com/in/ayush-ranjan-b363a7250",
