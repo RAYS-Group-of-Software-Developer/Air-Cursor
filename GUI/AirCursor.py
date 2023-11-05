@@ -76,7 +76,7 @@ class SplashFrame(ctk.CTkFrame):
 
     def create_wdgets(self):
         self.label_gif1 = ctk.CTkLabel(
-            self.main_frame, bg_color="transparent", fg_color="white", text=""
+            self.main_frame, bg_color="transparent", fg_color="black", text="",corner_radius=10
         )
 
         self.label_gif1.grid(row=0, column=0, sticky="nsew")
@@ -276,7 +276,7 @@ def launch_button_click():
     os.chdir("..")
     print(os.getcwd())
     os.system("echo \"sad\"")
-    os.system("python control.py")
+    os.system("python control_latest.py")
     # with open("C:\scripts\other.py") as f:
     #     exec(f.read())
 
@@ -1243,7 +1243,16 @@ class MainWindow(ctk.CTk):
         self.config(background=background_color)
 
         # Splash Screen
-        self.Splash_Frame = SplashFrame(self, width=self.width, height=self.height, bg_color="white", border_width=0, border_color="black", fg_color="black")
+        self.Splash_Frame = SplashFrame(
+            self,
+            width=self.width,
+            height=self.height,
+            bg_color="white",
+            border_width=0,
+            border_color="black",
+            fg_color="black",
+            corner_radius=10,
+        )
 
         # base frame
         self.Base_Frame = Base(

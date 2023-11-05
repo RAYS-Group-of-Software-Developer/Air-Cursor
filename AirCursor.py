@@ -885,7 +885,7 @@ class Base(ctk.CTkFrame):
         os.chdir("..") 
         print(os.getcwd())
         os.system("echo \"sad\"")
-        os.system("python3 control.py")
+        os.system("python3 control_latest.py")
         # with open("C:\scripts\other.py") as f:
         #     exec(f.read())
 
