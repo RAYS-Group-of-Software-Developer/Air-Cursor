@@ -8,9 +8,12 @@ import cv2
 import os
 from random import choice
 import webbrowser
-
+from dotenv import load_dotenv
+load_dotenv('../.env')
 
 def _get_frames(img):
+    height = 400
+    width = int(height * 1.6)
     with Image.open(img) as gif:
         index = 0
         frames = []
@@ -18,7 +21,7 @@ def _get_frames(img):
             try:
                 gif.seek(index)
                 frame = ctk.CTkImage(
-                    light_image=gif.copy(), dark_image=gif.copy(), size=(450, 300)
+                    light_image=gif.copy(), dark_image=gif.copy(), size=(width, height)
                 )
                 frames.append(frame)
             except EOFError:
@@ -97,7 +100,7 @@ def create_developer_frame(parent, img_path, name, role, email, github, linkedin
     )
 
     developer_frame.grid_rowconfigure((0, 1, 2, 3), weight=1)
-    developer_frame.grid_columnconfigure((0, 1, 2, 3, 4, 5,6), weight=1)
+    developer_frame.grid_columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
 
     developer_frame.bind("<Configure>", lambda event: get_size(event))
     width = 350
@@ -157,6 +160,16 @@ def create_developer_frame(parent, img_path, name, role, email, github, linkedin
         font=("Segoe UI", 25, "bold"),
         corner_radius=10,
     )
+    developer_contribution = ctk.CTkTextbox(
+        developer_frame,
+        font=("Segoe UI", 15, 'bold'),
+        corner_radius=10,
+        bg_color="transparent",
+        fg_color="transparent",
+        wrap="word",
+    )
+    developer_contribution.insert("1.0", role)
+    developer_contribution.configure(state="disabled")
     developer_email_label = ctk.CTkLabel(
         developer_frame,
         text="",
@@ -234,22 +247,22 @@ def create_developer_frame(parent, img_path, name, role, email, github, linkedin
     # place the widgets
     if side == "left":
         developer_photo_label.grid(row=0, column=0, rowspan=4, sticky="nsw", padx=20, pady=20)
-        developer_name_label.grid(row=0, column=2, columnspan=5, sticky="n", padx=(50, 50), pady=(20, 0))
-        # developer_role_label.grid(row=1, column=2, rowspan=1, columnspan=5, sticky="nwe", padx=(50, 50), pady=(0, 0))
-        developer_email_label.grid(row=3, column=2, columnspan=1, sticky="n", padx=(20, 5), pady=(0, 10))
-        developer_github_label.grid(row=3, column=3, columnspan=1, sticky="n", padx=(5, 5), pady=(0, 10))
-        developer_linkedin_label.grid(row=3, column=4, columnspan=1, sticky="n", padx=(5, 5), pady=(0, 10))
-        developer_phone_label.grid(row=3, column=5, columnspan=1, sticky="n", padx=(5, 5), pady=(0, 10))
-        developer_instagram_label.grid(row=3, column=6, columnspan=1, sticky="n", padx=(5, 20), pady=(0, 10))
+        developer_name_label.grid(row=0, column=2, columnspan=4, sticky="n", padx=(50, 50), pady=(20, 0))
+        developer_contribution.grid(row=1, column=2, rowspan=1, columnspan=4, sticky="nswe", padx=(50, 50), pady=(0, 0))
+        developer_email_label.grid(row=2, column=2, columnspan=1, sticky="s", padx=(20, 5), pady=(0, 30))
+        developer_github_label.grid(row=2, column=3, columnspan=1, sticky="s", padx=(5, 5), pady=(0, 30))
+        developer_linkedin_label.grid(row=2, column=4, columnspan=1, sticky="s", padx=(5, 5), pady=(0, 30))
+        developer_phone_label.grid(row=2, column=5, columnspan=1, sticky="s", padx=(5, 20), pady=(0, 30))
+        # developer_instagram_label.grid(row=3, column=6, columnspan=1, sticky="n", padx=(5, 20), pady=(0, 10))
     elif side == "right":
         developer_photo_label.grid(row=0, column=6, rowspan=4, sticky="nse", padx=(50, 20), pady=20)
-        developer_name_label.grid(row=0, column=0, columnspan=5, sticky="n", padx=50, pady=(20, 0))
-        # developer_role_label.grid(row=1, column=0, rowspan=1, columnspan=5, sticky="new", padx=50, pady=(0, 0))
-        developer_email_label.grid(row=3, column=0, columnspan=1, sticky="n", padx=(20, 5), pady=(0, 10))
-        developer_github_label.grid(row=3, column=1, columnspan=1, sticky="n", padx=(5, 5), pady=(0, 10))
-        developer_linkedin_label.grid(row=3, column=2, columnspan=1, sticky="n", padx=(5, 5), pady=(0, 10))
-        developer_phone_label.grid(row=3, column=3, columnspan=1, sticky="n", padx=(5, 5), pady=(0, 10))
-        developer_instagram_label.grid(row=3, column=4, columnspan=1, sticky="n", padx=(5, 20), pady=(0, 10))
+        developer_name_label.grid(row=0, column=0, columnspan=4, sticky="n", padx=50, pady=(20, 0))
+        developer_contribution.grid(row=1, column=0, rowspan=1, columnspan=4, sticky="nsew", padx=50, pady=(0, 0))
+        developer_email_label.grid(row=2, column=0, columnspan=1, sticky="s", padx=(20, 5), pady=(0, 30))
+        developer_github_label.grid(row=2, column=1, columnspan=1, sticky="s", padx=(5, 5), pady=(0, 30))
+        developer_linkedin_label.grid(row=2, column=2, columnspan=1, sticky="s", padx=(5, 5), pady=(0, 30))
+        developer_phone_label.grid(row=2, column=3, columnspan=1, sticky="s", padx=(5, 20), pady=(0, 30))
+        # developer_instagram_label.grid(row=3, column=4, columnspan=1, sticky="n", padx=(5, 20), pady=(0, 10))
 
     return developer_frame
 
@@ -321,11 +334,6 @@ class Base(ctk.CTkFrame):
 
         self._create_base_frame()
 
-        # self.Configure_widget = self.create_configure_widget()
-        # self.Help_widget = self.create_help_widget()
-        # self.About_us_widget = self.create_About_us_widget()v
-        # self.Lauch_widget = self.create_launch_widget()
-        # self.Tips_widget = self.create_tips_widget()
 
     def create_configure_widget(self):
         configure_widget = ctk.CTkFrame(
@@ -353,12 +361,7 @@ class Base(ctk.CTkFrame):
             command=self.configure_button_click,
         )
         button.place(relx=0.5, rely=0.79, relwidth=0.9, relheight=0.30, anchor="center")
-        # button.bind("<Enter>", lambda event: button.configure(fg_color="#D4ADFC"))
-        # button.bind("<Leave>", lambda event: button.configure(fg_color="#5C469C"))
         return configure_widget
-
-        # self.configure_widget.grid_columnconfigure(0, weight=1)
-        # self.configure_widget.grid_rowconfigure((0,1,2), weight=1)
 
     def create_help_widget(self):
         help_widget = ctk.CTkFrame(
@@ -387,10 +390,6 @@ class Base(ctk.CTkFrame):
             command=self.help_button_click,
         )
         button.place(relx=0.5, rely=0.79, relwidth=0.9, relheight=0.30, anchor="center")
-
-        # button.bind("<Enter>", lambda event: button.configure(image=arrow_img))
-        # button.bind("<Leave>", lambda event: button.configure(image=launch_img))
-
         return help_widget
 
     def create_About_us_widget(self):
@@ -398,8 +397,6 @@ class Base(ctk.CTkFrame):
             self,
             bg_color="transparent",
             fg_color="transparent",
-            # fg_color=("#58563F", "#344F32"),
-            # fg_color="",
             corner_radius=20,
         )
         # only a button
@@ -434,15 +431,7 @@ class Base(ctk.CTkFrame):
         )
         img = Image.open(imgPath)
         img_obj = ctk.CTkImage(dark_image=img, light_image=img, size=(800, 200))
-        # self.img_label = ctk.CTkLabel(Lauch_widget, image=img_obj, text="", corner_radius=10)
-        # self.img_label.place(relx=0.5, rely=0.5, relwidth=0.99, relheight=0.99, anchor="center")
-
-        # self._canvas = ctk.CTkCanvas(Lauch_widget)
-        # self._canvas.place(relx=0.5, rely=0.5, relwidth=1, relheight=1, anchor="center")
-        # self._canvas.create_image(0, 0, image=img, anchor="nw")
-
         # create frames
-
         label_frame = ctk.CTkFrame(
             Lauch_widget,
             bg_color="transparent",
@@ -577,8 +566,6 @@ class Base(ctk.CTkFrame):
             hover_color=("#89A6A6", "#2E4343"),
             command=lambda: next_tip(),
         )
-        # left_button.place(relx=0.01, rely=0.01, relwidth=0.1, relheight=0.98, anchor="nw")
-        # right_button.place(relx=0.89, rely=0.01, relwidth=0.1, relheight=0.98, anchor="nw")
         left_button.place(relx=0, rely=0.0, relwidth=0.1, relheight=1, anchor="nw")
         right_button.place(relx=0.9, rely=0.0, relwidth=0.1, relheight=1, anchor="nw")
 
@@ -718,17 +705,6 @@ class Base(ctk.CTkFrame):
 
     # ############## Create and place the configure page ################ #
     def _create_configure_page(self):
-        """
-        <Configure content>
-        <Save> <Back Button>
-
-        Configure content contains:
-            <Smoothness factor slider>
-            <Cursor size slider>
-            <Choose camera>
-            <Show the camera feed>
-        """
-
         # create a scrollable frame
         self.Configure_Frame = ctk.CTkScrollableFrame(
             self,
@@ -736,7 +712,6 @@ class Base(ctk.CTkFrame):
             fg_color="transparent",
             corner_radius=10
         )
-
         # frame 1 (smoothness factor 1)
         frame1 = ctk.CTkFrame(
             self.Configure_Frame,
@@ -744,10 +719,8 @@ class Base(ctk.CTkFrame):
             fg_color="transparent",
             corner_radius=10,
         )
-
         frame1.grid_rowconfigure(0, weight=1)
         frame1.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
-
         label1 = ctk.CTkLabel(
             frame1,
             text="Smoothness Factor 1",
@@ -769,11 +742,9 @@ class Base(ctk.CTkFrame):
             font=("Segoe UI", 20, "bold"),
             corner_radius=10,
         )
-
         label1.grid(row=0, column=0, sticky="nsew")
         slider1.grid(row=0, column=1, columnspan=3, sticky="nsew")
         value_label1.grid(row=0, column=4, sticky="nsew")
-
         # frame 2 (smoothness factor 2)
         frame2 = ctk.CTkFrame(
             self.Configure_Frame,
@@ -783,7 +754,6 @@ class Base(ctk.CTkFrame):
         )
         frame2.grid_rowconfigure(0, weight=1)
         frame2.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
-
         label2 = ctk.CTkLabel(
             frame2,
             text="Smoothness Factor 2",
@@ -805,7 +775,6 @@ class Base(ctk.CTkFrame):
             font=("Segoe UI", 20, "bold"),
             corner_radius=10,
         )
-
         label2.grid(row=0, column=0, sticky="nsew")
         slider2.grid(row=0, column=1, columnspan=3, sticky="nsew")
         value_label2.grid(row=0, column=4, sticky="nsew")
@@ -819,7 +788,6 @@ class Base(ctk.CTkFrame):
         )
         frame3.grid_rowconfigure(0, weight=1)
         frame3.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
-
         label3 = ctk.CTkLabel(
             frame3,
             text="Choose Theme",
@@ -839,7 +807,6 @@ class Base(ctk.CTkFrame):
             command=lambda event: self.theme_list_selection(event, theme_list),
         )
         theme_list.set(self.theme)
-
         label3.grid(row=0, column=0, sticky="nsew")
         theme_list.grid(row=0, column=1, columnspan=3, sticky="nsew")
 
@@ -852,7 +819,6 @@ class Base(ctk.CTkFrame):
         )
         frame4.grid_rowconfigure(0, weight=1)
         frame4.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
-
         label4 = ctk.CTkLabel(
             frame4,
             text="Choose Camera",
@@ -872,7 +838,6 @@ class Base(ctk.CTkFrame):
             command=lambda event: self.camera_list_selection(event, camera_list),
         )
         camera_list.set(f"Camera {self.camera_index + 1}")
-
         label4.grid(row=0, column=0, sticky="nsew")
         camera_list.grid(row=0, column=1, columnspan=3, sticky="nsew")
 
@@ -884,7 +849,6 @@ class Base(ctk.CTkFrame):
             corner_radius=10,
             width=20,
         )
-
         label5 = ctk.CTkLabel(
             frame5,
             text="Show the camera feed",
@@ -902,10 +866,8 @@ class Base(ctk.CTkFrame):
             onvalue="on",
             offvalue="off"
         )
-
         label5.pack(expand=True, fill="both", side="left")
         switch.pack(expand=True, fill="both", side="left")
-
         camera_feed_frame = ctk.CTkFrame(
             self.Configure_Frame,
             bg_color="transparent",
@@ -963,7 +925,6 @@ class Base(ctk.CTkFrame):
         )
         frame6.grid_rowconfigure(0, weight=1)
         frame6.grid_columnconfigure((0, 1), weight=1)
-
         save_button = ctk.CTkButton(
             frame6,
             text="Save",
@@ -988,10 +949,8 @@ class Base(ctk.CTkFrame):
             hover_color=("#58563F", "#4E724B"),
             command=lambda: self._back_from_configure_page(),
         )
-
         save_button.grid(row=0, column=0, sticky="nsew", padx=30, pady=0)
         back_button.grid(row=0, column=1, sticky="nsew", padx=30, pady=0)
-
         # remove all the widgets from the base frame
         for widget in self.winfo_children():
             widget.place_forget()
@@ -1043,19 +1002,6 @@ class Base(ctk.CTkFrame):
 
     # ############# Create and place the About us page ################ #
     def _create_about_us_page(self):
-        """
-        <About us content>
-        <Back Button>
-        
-        About us content contains:
-            <Developers>
-            <Contributors>
-            <Contact us>
-        
-        There are 5 developers and no contributors, but we have mentioned the names of the people who helped us in the project.
-        Developers contains:
-            <Photo> <Name> <Email> <Github> <LinkedIn>
-        """
         # create a scrollable frame
         self.About_us_Frame = ctk.CTkScrollableFrame(
             self, bg_color="transparent", fg_color="transparent", corner_radius=10
@@ -1080,18 +1026,15 @@ class Base(ctk.CTkFrame):
             bg_color="transparent",
             fg_color=("#89A6A6", "#2E4343"),
             corner_radius=10,
-            font=("Segoe UI", 15),
+            font=("Segoe UI", 18),
             activate_scrollbars=False,
-            height=350,
+            height=250,
+            wrap="word",
         )
         description.insert(
-            "end",
-            "AIRCURSOR: A Hand Gesture Controlled App for Computer Functions\n"
-"Do you want to control your computer with just your hand gestures? Do you want to experience the convenience and fun of using your fingers, palm, and thumb to perform various functions like clicking, scrolling, volume control, and drag and drop? Do you want to help people who have difficulty using a mouse or keyboard due to physical disabilities or injuries? If yes, then AIRCURSOR is the app for you!\n"
-"AIRCURSOR is an app that uses a webcam to detect your hand movements and gestures and translates them into computer actions. You can use your hand to control the mouse pointer, left click, right click, scroll up and down, increase and decrease the volume, and drag and drop files or folders. You can also use voice commands to switch between windows or applications.\n"
-"AIRCURSOR is a project developed by a team of students under the guidance of Professor Sandeep Kumar and his teaching assistants. It is based on Python, OpenCV, and pyautogui libraries. It uses machine learning and computer vision techniques to recognize hand landmarks and gesture patterns.\n"
-"AIRCURSOR is a simple and innovative way to interact with your computer. It can make your work more efficient and fun. It can also help people who have difficulty using a mouse or keyboard due to physical disabilities or injuries.\n"
-"AIRCURSOR is the ultimate hand gesture controlled app for computer functions. Try it today and experience the magic of AIRCURSOR!\n",
+            "1.0",
+            "The 'Air Cursor' desktop application redefines human-computer interaction, allowing users to navigate and control computer operations using intuitive hand gestures. With a user-friendly interface and easy and simple to use gestures, it enhances accessibility, particularly for individuals with physical limitations. Users can easily download the application to enjoy a more natural and intuitive approach to navigation. Join the future of effortless interaction with Air Cursor.\n\n" 
+                "This project has been completed under the guidance of Mr. Sandeep Kumar Garg, Professor, Department of Computer Science and Engineering, IIT Roorkee along with continuous reviewing by the teaching assistants. ",
         )
         description.configure(state="disabled")
 
@@ -1123,7 +1066,7 @@ class Base(ctk.CTkFrame):
             self.About_us_Frame,
             img_path=Souvik_img_path,
             name="Souvik Karmakar",
-            role="Team Leader",
+            role="Contributed to the designing and development of the User interface and user experience. Involved in proper testing at all stages with debugging.",
             email="souvik_k@cs.iitr.ac.in",
             github="https://github.com/souvik-13",
             linkedin="https://www.linkedin.com/in/souvik-karmakar-888202257/",
@@ -1137,7 +1080,7 @@ class Base(ctk.CTkFrame):
             self.About_us_Frame,
             img_path=Raman_img_path,
             name="Raman Sharma",
-            role="Team Member",
+            role="Served as Team leader. Designed the whole UI along with document formatting and writing. Also, contributed to the design of the algorithm and simple gesture technique for a seamless experience. Involved in proper testing at all stages with debugging. ",
             email="raman_s@cs.iitr.ac.in",
             github="https://github.com/ramansharma829455",
             linkedin="https://www.linkedin.com/in/raman-sharma-8294551b7/",
@@ -1151,7 +1094,7 @@ class Base(ctk.CTkFrame):
             self.About_us_Frame,
             img_path=Yashwanth_img_path,
             name="Boda Yashwanth",
-            role="Team Member",
+            role="Contributed to designing and implementing the hand tracking, gesture detection and computer automation algorithms. Also, contributed majorly in writing the various paperwork related to the project.",
             email="boda_y@cs.iitr.ac.in",
             github="https://github.com/yashwanthboda",
             linkedin="https://www.linkedin.com/in/yashwanth-boda-555224299/",
@@ -1165,7 +1108,7 @@ class Base(ctk.CTkFrame):
             self.About_us_Frame,
             img_path=Sukhman_img_path,
             name="Sukhman Singh",
-            role="Team Member",
+            role="Integration of the frontend with backend.",
             email="sukhman_s@cs.iitr.ac.in",
             github="https://github.com/sukhman-sukh",
             linkedin="https://www.linkedin.com/in/sukhman-singh-3a6a1b1b9/",
@@ -1178,7 +1121,7 @@ class Base(ctk.CTkFrame):
             self.About_us_Frame,
             img_path=Ayush_img_path,
             name="Ayush Ranjan",
-            role="Team Member",
+            role="Contributed to the design and implementation of the algorithms and logic behind the various gesture-driven computer operations along with the speed, accuracy and reliability testing across various systems.",
             email="ayush_r@cs.iitr.ac.in",
             github="https://github.com/ayushr100",
             linkedin="https://www.linkedin.com/in/ayush-ranjan-b363a7250",
@@ -1221,8 +1164,8 @@ class Base(ctk.CTkFrame):
         frame0.pack(expand=True, fill="both", pady=0, padx=0)
         description.pack(expand=True, fill="both", padx=20, pady=20)
         dev_label_frame.pack(expand=True, fill="both", pady=20, padx=0)
-        souvik_frame.pack(expand=True, fill="both", pady=20, padx=20)
         raman_frame.pack(expand=True, fill="both", pady=20, padx=20)
+        souvik_frame.pack(expand=True, fill="both", pady=20, padx=20)
         yashwanth_frame.pack(expand=True, fill="both", pady=20, padx=20)
         sukhman_frame.pack(expand=True, fill="both", pady=20, padx=20)
         ayush_frame.pack(expand=True, fill="both", pady=20, padx=20)
@@ -1278,12 +1221,12 @@ class MainWindow(ctk.CTk):
         super().__init__(fg_color, **kwargs)
 
         # window settings
-        self.width = 450
-        self.height = 300
-        self.x = int((self.winfo_screenwidth() - self.width) // 2)
-        self.y = int((self.winfo_screenheight() - self.height) // 2)
-        # self.overrideredirect(True)
-        # self.resizable(resizeable, resizeable)
+        self.height = 400
+        self.width = int(self.height * 1.6)
+        self.x = int((self.winfo_screenwidth()*1.5 - self.width*1.5)/2)
+        self.x_1 = int((self.winfo_screenwidth() - self.width)/2)
+        self.y = int((self.winfo_screenheight()*1.5 - self.height*1.5) // 2)
+        self.y_1 = int((self.winfo_screenheight() - self.height) // 2)
 
         # set icon
         if icon_path:
@@ -1297,7 +1240,6 @@ class MainWindow(ctk.CTk):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)  # 0 is titlebar, 1 is base
         self.grid_rowconfigure(1, weight=1)
-
         self.config(background=background_color)
 
         # Splash Screen
@@ -1310,8 +1252,8 @@ class MainWindow(ctk.CTk):
             fg_color=("#B8D8D8", "#152E2E"),
             # border_width=0,
             corner_radius=10,
-            smoothness_factor_1=7,
-            smoothness_factor_2=5,
+            smoothness_factor_1=float(5.1),
+            smoothness_factor_2=float(5.1),
             camera_index=0,
         )
 
@@ -1333,7 +1275,8 @@ class MainWindow(ctk.CTk):
         self.overrideredirect(False)
         self.width = 1000
         self.height = int(self.width * 9 / 16)
-        self.geometry(f"{self.width}x{self.height}")
+        self.geometry(f"{self.width}x{self.height}+{self.x_1}+{self.y_1}")
+        self.minsize(self.width, self.height)
         self.Base_Frame.place(
             relx=0.5, rely=0.5, relwidth=1, relheight=1, anchor="center"
         )
