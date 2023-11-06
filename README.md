@@ -20,7 +20,7 @@ Welcome to Air Cursor!
 - [MediaPipe](https://mediapipe.dev/): A library by Google that provides customizable solutions for real-time hand tracking and gesture recognition.
 - [PyAutoGUI](https://pyautogui.readthedocs.io/): Python module for programmatically controlling the mouse and keyboard.
 - [AutoPy](https://github.com/msanders/autopy): Python module for automating tasks, including mouse movements and clicks.
-- [Tkinter](https://docs.python.org/3/library/tkinter.html): Python's standard GUI (Graphical User Interface) package used for building the desktop application's frontend.
+- [CustomTkinter](https://customtkinter.tomschimansky.com/): A modern and customizable python UI library for creating desktop applications based on Tkinter.
 
 
 ## Installation
