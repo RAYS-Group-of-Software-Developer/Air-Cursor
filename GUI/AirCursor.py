@@ -10,7 +10,7 @@ from random import choice
 import webbrowser
 from dotenv import load_dotenv
 load_dotenv('../.env')
-
+file_path = "../config.txt"
 def _get_frames(img):
     height = 400
     width = int(height * 1.6)
@@ -1180,6 +1180,13 @@ class Base(ctk.CTkFrame):
             self, smoothness_factor_1, smoothness_factor_2, camera_index
     ):
         # save the configuration and go back to the base frame
+        # os.environ['SF1'] = str(smoothness_factor_1)
+        # os.environ['SF2'] = str(smoothness_factor_2)
+        # os.environ['CAMERA_INDEX'] = str(camera_index)
+        with open(file_path, "w") as f:
+            f.write(f"{smoothness_factor_1}\n")
+            f.write(f"{smoothness_factor_2}\n")
+            f.write(f"{camera_index}\n")
         self._back_from_configure_page()
 
     def _back_from_configure_page(self):
@@ -1228,6 +1235,10 @@ class MainWindow(ctk.CTk):
         self.y = int((self.winfo_screenheight()*1.5 - self.height*1.5) // 2)
         self.y_1 = int((self.winfo_screenheight() - self.height) // 2)
 
+        with open(file_path, "r") as f:
+            _smoothness_factor_1 = float(f.readline())
+            _smoothness_factor_2 = float(f.readline())
+            _camera_index = int(f.readline())
         # set icon
         if icon_path:
             self.iconbitmap(icon_path)
@@ -1261,9 +1272,9 @@ class MainWindow(ctk.CTk):
             fg_color=("#B8D8D8", "#152E2E"),
             # border_width=0,
             corner_radius=10,
-            smoothness_factor_1=float(5.1),
-            smoothness_factor_2=float(5.1),
-            camera_index=0,
+            smoothness_factor_1=_smoothness_factor_1,
+            smoothness_factor_2=_smoothness_factor_2,
+            camera_index=_camera_index,
         )
 
         self.show_splash()
