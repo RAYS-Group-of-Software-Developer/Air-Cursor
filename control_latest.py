@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
             if len(lmlist) != 0:
                 x1, y1 = lmlist[8][1:]
-                i = g.recognise(img, detector)
+                i = g.Gesture.recognise(img, detector)
                 # eventlist.append(i)
 
                 # -------------------------------------------For cursor move-------------------------------
@@ -144,27 +144,6 @@ if __name__ == "__main__":
 
 
                 # ----------------------------------------For volume level-------------------------------
-
-                # if i == 6 and (not volume_mode):
-                #     volume_mode = True
-                #
-                # if i == 6 and volume_mode:
-                #     x = np.interp(x1, (frame, width - frame), (0, screenWidth))
-                #     y = np.interp(y1, (frameu, height - framed), (0, screenHeight))
-                #     clocx = plocx + (x - plocx) / smoothening_vol
-                #     clocy = plocy + (y - plocy) / smoothening_vol
-                #
-                #     if clocy > plocy:
-                #         # for c in range(int(clocy-plocy)*2):
-                #         pt.press('volumedown')
-                #     elif clocy < plocy:
-                #         # for g in range(int(plocy-clocy)*2):
-                #         pt.press('volumeup')
-                #
-                #     plocx, plocy = clocx, clocy
-                #
-                # if prev_event == 6 and i != 6:
-                #     volume_mode = False
 
                 if prev_event == 6 and i == 6:
                     x = np.interp(x1, (frame, width - frame), (0, screenWidth))

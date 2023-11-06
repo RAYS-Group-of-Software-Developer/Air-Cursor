@@ -1297,10 +1297,10 @@ class MainWindow(ctk.CTk):
         super().__init__(fg_color, **kwargs)
 
         # window settings
-        self.height = 400
+        self.height = int(400)
         self.width = int(self.height * 1.6)
-        self.x = int((self.winfo_screenwidth() * 1.5 - self.width * 1.5) / 2)
-        self.x_1 = int((self.winfo_screenwidth() - self.width) / 2)
+        self.x = int((self.winfo_screenwidth() * 1.5 - self.width * 1.5) // 2)
+        self.x_1 = int((self.winfo_screenwidth() - self.width) // 2)
         self.y = int((self.winfo_screenheight() * 1.5 - self.height * 1.5) // 2)
         self.y_1 = int((self.winfo_screenheight() - self.height) // 2)
 
