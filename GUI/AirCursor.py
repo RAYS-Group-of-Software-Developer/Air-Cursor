@@ -1,6 +1,7 @@
 from __future__ import annotations
 import sys
 import time
+import subprocess
 from typing import Tuple
 import customtkinter as ctk
 from PIL import Image
@@ -273,10 +274,12 @@ def stop_button_click():
 
 def launch_button_click():
     # os.system("cd ./../")
-    os.chdir("..")
-    print(os.getcwd())
-    os.system("echo \"sad\"")
-    os.system("python control_latest.py")
+    # os.chdir("..")
+    # print(os.getcwd())
+    # os.system("echo \"sad\"")
+    # os.system("python control_latest.py")
+    control_latest = "../control_latest.py"
+    subprocess.Popen(["python", control_latest], creationflags=subprocess.CREATE_NEW_CONSOLE)
     # with open("C:\scripts\other.py") as f:
     #     exec(f.read())
 
