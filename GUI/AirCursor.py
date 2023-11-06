@@ -11,16 +11,20 @@ from random import choice
 import webbrowser
 import atexit
 
-
 global p
+p=None
 file_path = "../config.txt"
+
 
 def on_exit():
     # print("endinggggggggg")
     stop_button_click()
     # print("sadasdas")
 
+
 atexit.register(on_exit)
+
+
 def _get_frames(img):
     height = 400
     width = int(height * 1.6)
@@ -86,7 +90,7 @@ class SplashFrame(ctk.CTkFrame):
 
     def create_wdgets(self):
         self.label_gif1 = ctk.CTkLabel(
-            self.main_frame, bg_color="transparent", fg_color="black", text="",corner_radius=10
+            self.main_frame, bg_color="transparent", fg_color="black", text="", corner_radius=10
         )
 
         self.label_gif1.grid(row=0, column=0, sticky="nsew")
@@ -276,8 +280,10 @@ def create_developer_frame(parent, img_path, name, role, email, github, linkedin
 
     return developer_frame
 
+
 global running
 running = False
+
 
 def stop_button_click():
     global running
@@ -285,12 +291,14 @@ def stop_button_click():
     # sys.exit()
     # p.kill()
     global p
+    if p is None:
+        return
     if p:
         p.terminate()
         p.wait()
         # print("process ended")
-    else:
-        # print("process not found")
+
+
 def launch_button_click():
     global p
     global running
@@ -362,7 +370,6 @@ class Base(ctk.CTkFrame):
         self.Show_camera = False
 
         self._create_base_frame()
-
 
     def create_configure_widget(self):
         configure_widget = ctk.CTkFrame(
@@ -1062,8 +1069,8 @@ class Base(ctk.CTkFrame):
         )
         description.insert(
             "1.0",
-            "The 'Air Cursor' desktop application redefines human-computer interaction, allowing users to navigate and control computer operations using intuitive hand gestures. With a user-friendly interface and easy and simple to use gestures, it enhances accessibility, particularly for individuals with physical limitations. Users can easily download the application to enjoy a more natural and intuitive approach to navigation. Join the future of effortless interaction with Air Cursor.\n\n" 
-                "This project has been completed under the guidance of Mr. Sandeep Kumar Garg, Professor, Department of Computer Science and Engineering, IIT Roorkee along with continuous reviewing by the teaching assistants. ",
+            "The 'Air Cursor' desktop application redefines human-computer interaction, allowing users to navigate and control computer operations using intuitive hand gestures. With a user-friendly interface and easy and simple to use gestures, it enhances accessibility, particularly for individuals with physical limitations. Users can easily download the application to enjoy a more natural and intuitive approach to navigation. Join the future of effortless interaction with Air Cursor.\n\n"
+            "This project has been completed under the guidance of Mr. Sandeep Kumar Garg, Professor, Department of Computer Science and Engineering, IIT Roorkee along with continuous reviewing by the teaching assistants. ",
         )
         description.configure(state="disabled")
 
@@ -1259,9 +1266,9 @@ class MainWindow(ctk.CTk):
         # window settings
         self.height = 400
         self.width = int(self.height * 1.6)
-        self.x = int((self.winfo_screenwidth()*1.5 - self.width*1.5)/2)
-        self.x_1 = int((self.winfo_screenwidth() - self.width)/2)
-        self.y = int((self.winfo_screenheight()*1.5 - self.height*1.5) // 2)
+        self.x = int((self.winfo_screenwidth() * 1.5 - self.width * 1.5) / 2)
+        self.x_1 = int((self.winfo_screenwidth() - self.width) / 2)
+        self.y = int((self.winfo_screenheight() * 1.5 - self.height * 1.5) // 2)
         self.y_1 = int((self.winfo_screenheight() - self.height) // 2)
 
         with open(file_path, "r") as f:

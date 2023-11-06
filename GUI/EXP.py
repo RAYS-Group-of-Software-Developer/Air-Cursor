@@ -1,12 +1,24 @@
 import customtkinter as ctk
 from PIL import Image
 import cv2
+import os
 
 window = ctk.CTk()
 window.title('Image Viewer')
 window.geometry('800x600')
 
-label = ctk.CTkLabel(window)
+brand_icons = os.path.join(os.path.dirname(__file__), "Assets", "Brand_icons")
+github_img = ctk.CTkImage(
+    dark_image=Image.open(os.path.join(brand_icons, "github_dark.png")),
+    light_image=Image.open(os.path.join(brand_icons, "github_light.png")),
+    size=(100, 100),
+)
+
+label = ctk.CTkLabel(
+    window,
+    text="",
+    image=github_img
+)
 label.pack()
 
 cap = cv2.VideoCapture(0)
@@ -28,5 +40,5 @@ def show_frames():
     label.after(20, show_frames)
 
 
-show_frames()
+# show_frames()
 window.mainloop()
