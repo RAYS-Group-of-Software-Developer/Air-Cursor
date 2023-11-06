@@ -26,3 +26,10 @@ Welcome to Air Cursor!
 ## Installation
 
 To get started with Air Cursor, follow these steps:
+
+Copy the code below in your terminal or powershell to run the code
+```
+pip install -r ./Requirements.txt
+
+python3 ./GUI/AirCursor.py
+```

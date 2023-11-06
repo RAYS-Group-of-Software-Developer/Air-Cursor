@@ -9,9 +9,18 @@ import cv2
 import os
 from random import choice
 import webbrowser
-from dotenv import load_dotenv
-load_dotenv('../.env')
+import atexit
+
+
+global p
 file_path = "../config.txt"
+
+def on_exit():
+    # print("endinggggggggg")
+    stop_button_click()
+    # print("sadasdas")
+
+atexit.register(on_exit)
 def _get_frames(img):
     height = 400
     width = int(height * 1.6)
@@ -269,17 +278,26 @@ def create_developer_frame(parent, img_path, name, role, email, github, linkedin
 
 
 def stop_button_click():
-    sys.exit()
-
-
+    # sys.exit()
+    # p.kill()
+    global p
+    if p:
+        p.terminate()
+        p.wait()
+        print("process ended")
+    else:
+        print("process not found")
 def launch_button_click():
+    global p
     # os.system("cd ./../")
     # os.chdir("..")
     # print(os.getcwd())
     # os.system("echo \"sad\"")
     # os.system("python control_latest.py")
     control_latest = "../control_latest.py"
-    subprocess.Popen(["python", control_latest], creationflags=subprocess.CREATE_NEW_CONSOLE)
+    p = subprocess.Popen(["python", control_latest])
+    print("subprocess started")
+    # return p
     # with open("C:\scripts\other.py") as f:
     #     exec(f.read())
 

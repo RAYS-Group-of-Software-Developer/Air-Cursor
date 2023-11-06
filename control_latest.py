@@ -14,16 +14,16 @@ if __name__ == "__main__":
     plocx, plocy = screenWidth / 2, screenHeight / 2
     clocx, clocy = screenWidth / 2, screenHeight / 2
 
-    file_path = "config.txt"
+    file_path = "../config.txt"
     with open(file_path, 'r') as f:
         _smoothness_factor_1 = float(f.readline())
         _smoothness_factor_2 = float(f.readline())
         _camera_index = int(f.readline())
 
     print(_smoothness_factor_1, _smoothness_factor_2, _camera_index)
-    smoothening_cursor_move = 7
-    smoothening_scroll = 7
 
+    smoothening_cursor_move = _smoothness_factor_1
+    smoothening_scroll = _smoothness_factor_2
 
     smoothening_vol = 1
     cap = cv2.VideoCapture(0)
