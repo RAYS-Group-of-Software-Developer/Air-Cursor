@@ -1173,7 +1173,7 @@ class Base(ctk.CTkFrame):
             self.About_us_Frame,
             img_path=Sukhman_img_path,
             name="Sukhman Singh",
-            role="Integration of the frontend with backend.",
+            role="Contributed to the analysis of the project feasibility and designed project pipeline. Integration of the front end with the back end.",
             email="sukhman_s@cs.iitr.ac.in",
             github="https://github.com/sukhman-sukh",
             linkedin="https://www.linkedin.com/in/sukhman-singh-291a8b252/",
