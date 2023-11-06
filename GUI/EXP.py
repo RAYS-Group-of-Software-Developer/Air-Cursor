@@ -21,7 +21,15 @@ label = ctk.CTkLabel(
 )
 label.pack()
 
-cap = cv2.VideoCapture(0)
+canvas = ctk.CTkCanvas(
+    window,
+    background="red",
+    width=800,
+    height=600,
+)
+canvas.pack()
+
+# cap = cv2.VideoCapture(0)
 
 
 # Define function to show frame

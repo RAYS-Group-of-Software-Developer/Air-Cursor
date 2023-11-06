@@ -82,7 +82,6 @@ class SplashFrame(ctk.CTkFrame):
 
         self.label_gif1 = None
         self.main_frame = self
-        # self.main_frame.config(bg = "black")
         self.main_frame.pack(expand=True, fill="both")
         self.main_frame.columnconfigure(0, weight=1)
         self.main_frame.rowconfigure(0, weight=1)
@@ -90,7 +89,12 @@ class SplashFrame(ctk.CTkFrame):
 
     def create_wdgets(self):
         self.label_gif1 = ctk.CTkLabel(
-            self.main_frame, bg_color="transparent", fg_color="black", text="", corner_radius=10
+            self.main_frame,
+            bg_color="transparent",
+            fg_color="transparent",
+            text="",
+            corner_radius=20,
+            width=int(400*1.6), height=400
         )
 
         self.label_gif1.grid(row=0, column=0, sticky="nsew")
@@ -244,7 +248,7 @@ def create_developer_frame(parent, img_path, name, role, email, github, linkedin
 
     developer_phone_label.bind("<Enter>", lambda event: onHover(event, developer_phone_label))
     developer_phone_label.bind("<Leave>", lambda event: onLeave(event, developer_phone_label))
-    developer_phone_label.bind("<Button-1>", lambda event: webbrowser.open_new_tab("tel:" + phone))
+    developer_phone_label.bind("<Button-1>", lambda event: webbrowser.open_new_tab("tel:" + str(phone)))
 
     developer_instagram_label.bind("<Enter>", lambda event: onHover(event, developer_instagram_label))
     developer_instagram_label.bind("<Leave>", lambda event: onLeave(event, developer_instagram_label))
@@ -759,7 +763,7 @@ class Base(ctk.CTkFrame):
         frame1.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
         label1 = ctk.CTkLabel(
             frame1,
-            text="Smoothness Factor 1",
+            text="Smoothness (cursor)   ",
             font=("Segoe UI", 22, "bold"),
             corner_radius=10,
         )
@@ -779,7 +783,7 @@ class Base(ctk.CTkFrame):
             corner_radius=10,
         )
         label1.grid(row=0, column=0, sticky="nsew")
-        slider1.grid(row=0, column=1, columnspan=3, sticky="nsew")
+        slider1.grid(row=0, column=1, columnspan=3, sticky="ew")
         value_label1.grid(row=0, column=4, sticky="nsew")
         # frame 2 (smoothness factor 2)
         frame2 = ctk.CTkFrame(
@@ -792,7 +796,7 @@ class Base(ctk.CTkFrame):
         frame2.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
         label2 = ctk.CTkLabel(
             frame2,
-            text="Smoothness Factor 2",
+            text="Smoothness (scrolling)",
             font=("Segoe UI", 22, "bold"),
             corner_radius=10,
         )
@@ -812,8 +816,28 @@ class Base(ctk.CTkFrame):
             corner_radius=10,
         )
         label2.grid(row=0, column=0, sticky="nsew")
-        slider2.grid(row=0, column=1, columnspan=3, sticky="nsew")
+        slider2.grid(row=0, column=1, columnspan=3, sticky="ew")
         value_label2.grid(row=0, column=4, sticky="nsew")
+
+        # note: For low end devices, the smoothness factor ( cursor ) should be below 5
+        # configure both values as per your convenience
+        # note_frame = ctk.CTkFrame(
+        #     self.Configure_Frame,
+        #     bg_color="transparent",
+        #     fg_color="red",
+        #     corner_radius=10,
+        # )
+        # note_frame.grid_rowconfigure(0, weight=1)
+        note_text = "   Note: For low end devices, the smoothness factor ( cursor ) should be below 5. Configure both values as per your convenience   "
+        note_textbox = ctk.CTkLabel(
+            self.Configure_Frame,
+            text=note_text,
+            font=("Segoe UI", 15, "bold"),
+            corner_radius=10,
+            bg_color="transparent",
+            fg_color="transparent",
+        )
+        # note_textbox.grid(row=0, sticky="nsew")
 
         # frame 3 (theme selection)
         frame3 = ctk.CTkFrame(
@@ -999,6 +1023,7 @@ class Base(ctk.CTkFrame):
         # place the frames
         frame1.pack(expand=True, fill="both", pady=(20, 10))
         frame2.pack(expand=True, fill="both", pady=(0, 20))
+        note_textbox.pack(expand=True, fill="both", pady=(0, 20))
         frame3.pack(expand=True, fill="both", pady=(0, 20))
         frame4.pack(expand=True, fill="both", pady=(0, 20))
         frame5.pack(expand=True, fill="both", pady=(0, 20))
@@ -1183,6 +1208,7 @@ class Base(ctk.CTkFrame):
             corner_radius=10,
             fg_color="transparent",
             bg_color="transparent",
+            hover_color=("#89A6A6", "#2E4343"),
             # border_color="white",
             # border_width=1,
             command=lambda: self._back_from_about_us_page(),
@@ -1296,11 +1322,11 @@ class MainWindow(ctk.CTk):
             self,
             width=self.width,
             height=self.height,
-            bg_color="white",
-            border_width=0,
+            bg_color="black",
+            border_width=2,
             border_color="black",
             fg_color="black",
-            corner_radius=10,
+            corner_radius=20,
         )
 
         # base frame
@@ -1317,7 +1343,7 @@ class MainWindow(ctk.CTk):
 
         self.show_splash()
         self.update()
-        self.after(7300, self.show_main)
+        self.after(7250, self.show_main)
         # self.show_main()
 
     def show_splash(self):
