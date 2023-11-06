@@ -26,8 +26,8 @@ Welcome to Air Cursor!
 ## Installation
 
 To get started with Air Cursor, follow these steps:
-
-Copy the code below in your terminal or powershell to run the code
+- **Python version must be [3.8](https://www.python.org/downloads/release/python-3810/) or below for running this application**
+- Copy the code below in your terminal or powershell to run the code
 ```
 pip install -r ./Requirements.txt
 
