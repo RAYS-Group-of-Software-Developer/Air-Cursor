@@ -288,9 +288,9 @@ def stop_button_click():
     if p:
         p.terminate()
         p.wait()
-        print("process ended")
+        # print("process ended")
     else:
-        print("process not found")
+        # print("process not found")
 def launch_button_click():
     global p
     global running
@@ -304,7 +304,7 @@ def launch_button_click():
     # os.system("python control_latest.py")
     control_latest = "../control_latest.py"
     p = subprocess.Popen(["python", control_latest])
-    print("subprocess started")
+    # print("subprocess started")
     # return p
     # with open("C:\scripts\other.py") as f:
     #     exec(f.read())
