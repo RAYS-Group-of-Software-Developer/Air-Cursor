@@ -1108,7 +1108,7 @@ class Base(ctk.CTkFrame):
             linkedin="https://www.linkedin.com/in/souvik-karmakar-888202257/",
             instagram="https://www.instagram.com/souv1k_13/",
             phone=8642924659,
-            side="left"
+            side="right"
         )
 
         # frame 2 -> developer 2 (Raman)
@@ -1122,7 +1122,7 @@ class Base(ctk.CTkFrame):
             linkedin="https://www.linkedin.com/in/raman-sharma-8294551b7/",
             instagram="https://www.instagram.com/ramansharma829455/",
             phone=7521829455,
-            side="right"
+            side="left"
         )
 
         # frame 3 -> developer 3 (Yash)
