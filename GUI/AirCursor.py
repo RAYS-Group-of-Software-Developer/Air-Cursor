@@ -276,8 +276,12 @@ def create_developer_frame(parent, img_path, name, role, email, github, linkedin
 
     return developer_frame
 
+global running
+running = False
 
 def stop_button_click():
+    global running
+    running = False
     # sys.exit()
     # p.kill()
     global p
@@ -289,6 +293,10 @@ def stop_button_click():
         print("process not found")
 def launch_button_click():
     global p
+    global running
+    if running:
+        return
+    running = True
     # os.system("cd ./../")
     # os.chdir("..")
     # print(os.getcwd())
