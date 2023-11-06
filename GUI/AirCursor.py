@@ -497,6 +497,7 @@ class Base(ctk.CTkFrame):
             "Move it like you own it",
             "You have magic hands.\nTry moving them",
             "Magic in the air",
+            "Launch here to get in\nthe world of adventure"
         )
         # label frame contains a cachphrase about the app -> "Move it like you own it"
         catchphrase_label = ctk.CTkLabel(
@@ -935,8 +936,8 @@ class Base(ctk.CTkFrame):
             bg_color="transparent",
             fg_color="transparent",
             corner_radius=10,
-            width=800,
-            height=600,
+            width=400,
+            height=300,
         )
         img_label = ctk.CTkLabel(
             camera_feed_frame,
@@ -953,19 +954,19 @@ class Base(ctk.CTkFrame):
                 _, frame = cap.read()
                 frame = cv2.flip(frame, 1)
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                frame = cv2.resize(frame, (800, 600))
+                frame = cv2.resize(frame, (400, 300))
                 img = Image.fromarray(frame)
                 img_obj = ctk.CTkImage(
                     dark_image=img,
                     light_image=img,
-                    size=(800, 600),
+                    size=(400, 300),
                 )
                 img_label.configure(image=img_obj)
                 img_label.after(1, show_frames, cap, img_label)
 
         def show_camera_feed():
             if switch_var.get() == "on":
-                frame5.configure(width=800)
+                frame5.configure(width=400)
                 self.Show_camera = True
                 self.cap = open_camera(self.camera_index)
                 img_label.pack(expand=True, fill="both", side="left")
@@ -991,6 +992,7 @@ class Base(ctk.CTkFrame):
             frame6,
             text="Save",
             font=("Segoe UI", 20, "bold"),
+            text_color=("black", "white"),
             corner_radius=10,
             bg_color="transparent",
             fg_color=("#7DAEC2", "#4A6667"),
@@ -1005,6 +1007,7 @@ class Base(ctk.CTkFrame):
             frame6,
             text="Back",
             font=("Segoe UI", 20, "bold"),
+            text_color=("black", "white"),
             corner_radius=10,
             bg_color="transparent",
             fg_color="transparent",
@@ -1173,7 +1176,7 @@ class Base(ctk.CTkFrame):
             self.About_us_Frame,
             img_path=Sukhman_img_path,
             name="Sukhman Singh",
-            role="Integration of the frontend with backend.",
+            role="Contributed to the analysis of the project feasibility and designed project pipeline. Integration of the front end with the back end.",
             email="sukhman_s@cs.iitr.ac.in",
             github="https://github.com/sukhman-sukh",
             linkedin="https://www.linkedin.com/in/sukhman-singh-291a8b252/",
