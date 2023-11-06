@@ -1266,9 +1266,9 @@ class MainWindow(ctk.CTk):
         # window settings
         self.height = 400
         self.width = int(self.height * 1.6)
-        self.x = int((self.winfo_screenwidth() * 1.5 - self.width * 1.5) / 2)
+        self.x = int((self.winfo_screenwidth() * 1.25 - self.width * 1.25) / 2)
         self.x_1 = int((self.winfo_screenwidth() - self.width) / 2)
-        self.y = int((self.winfo_screenheight() * 1.5 - self.height * 1.5) // 2)
+        self.y = int((self.winfo_screenheight() * 1.25 - self.height * 1.25) // 2)
         self.y_1 = int((self.winfo_screenheight() - self.height) // 2)
 
         with open(file_path, "r") as f:
