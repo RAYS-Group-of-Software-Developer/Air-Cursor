@@ -850,7 +850,7 @@ class Base(ctk.CTkFrame):
         frame3.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
         label3 = ctk.CTkLabel(
             frame3,
-            text="Choose Theme",
+            text="Choose Theme ",
             font=("Segoe UI", 22, "bold"),
             corner_radius=10,
         )
@@ -993,8 +993,8 @@ class Base(ctk.CTkFrame):
             font=("Segoe UI", 20, "bold"),
             corner_radius=10,
             bg_color="transparent",
-            fg_color=("#7E7B59", "#344F32"),
-            hover_color=("#58563F", "#4E724B"),
+            fg_color=("#7DAEC2", "#4A6667"),
+            hover_color=("#648FA1", "#6A9092"),
             command=lambda: self._save_configuration(
                 smoothness_factor_1=self.smoothness_factor_1,
                 smoothness_factor_2=self.smoothness_factor_2,
@@ -1007,12 +1007,14 @@ class Base(ctk.CTkFrame):
             font=("Segoe UI", 20, "bold"),
             corner_radius=10,
             bg_color="transparent",
-            fg_color=("#7E7B59", "#344F32"),
-            hover_color=("#58563F", "#4E724B"),
+            fg_color="transparent",
+            border_width=1,
+            border_color=("black", "white"),
+            hover_color=("#6A9092", "#6A9092"),
             command=lambda: self._back_from_configure_page(),
         )
-        save_button.grid(row=0, column=0, sticky="nsew", padx=30, pady=0)
-        back_button.grid(row=0, column=1, sticky="nsew", padx=30, pady=0)
+        save_button.grid(row=0, column=1, sticky="nsew", padx=30, pady=0)
+        back_button.grid(row=0, column=0, sticky="nsew", padx=30, pady=0)
         # remove all the widgets from the base frame
         for widget in self.winfo_children():
             widget.place_forget()
@@ -1042,9 +1044,9 @@ class Base(ctk.CTkFrame):
 
     def theme_list_selection(self, event, theme_list):
         if theme_list.get() == "Dark":
-            self.theme = "dark"
+            self.theme = "Dark"
         elif theme_list.get() == "Light":
-            self.theme = "light"
+            self.theme = "Light"
         elif theme_list.get() == "System":
             self.theme = "system"
         self.master.change_theme(self.theme)
@@ -1134,7 +1136,7 @@ class Base(ctk.CTkFrame):
             github="https://github.com/souvik-13",
             linkedin="https://www.linkedin.com/in/souvik-karmakar-888202257/",
             instagram="https://www.instagram.com/souv1k_13/",
-            phone=8642924659,
+            phone="+918642924659",
             side="right"
         )
 
@@ -1148,7 +1150,7 @@ class Base(ctk.CTkFrame):
             github="https://github.com/ramansharma829455",
             linkedin="https://www.linkedin.com/in/raman-sharma-8294551b7/",
             instagram="https://www.instagram.com/ramansharma829455/",
-            phone=7521829455,
+            phone="+917521829455",
             side="left"
         )
 
@@ -1162,7 +1164,7 @@ class Base(ctk.CTkFrame):
             github="https://github.com/yashwanthboda",
             linkedin="https://www.linkedin.com/in/yashwanth-boda-555224299/",
             instagram="https://www.instagram.com/yashwanth_boda/",
-            phone=8977925111,
+            phone="+918977925111",
             side="left"
         )
 
@@ -1174,9 +1176,9 @@ class Base(ctk.CTkFrame):
             role="Integration of the frontend with backend.",
             email="sukhman_s@cs.iitr.ac.in",
             github="https://github.com/sukhman-sukh",
-            linkedin="https://www.linkedin.com/in/sukhman-singh-3a6a1b1b9/",
+            linkedin="https://www.linkedin.com/in/sukhman-singh-291a8b252/",
             instagram="https://www.instagram.com/sukhman_sukh/",
-            phone=19415860440,
+            phone="+9119415860440",
             side="right"
         )
         # frame 5 -> developer 5 (Ayush)
@@ -1189,7 +1191,7 @@ class Base(ctk.CTkFrame):
             github="https://github.com/ayushr100",
             linkedin="https://www.linkedin.com/in/ayush-ranjan-b363a7250",
             instagram="https://www.instagram.com/ayush_ranjan_100/",
-            phone=7482958551,
+            phone="+917482958551",
             side="left"
         )
 
@@ -1294,9 +1296,9 @@ class MainWindow(ctk.CTk):
         # window settings
         self.height = 400
         self.width = int(self.height * 1.6)
-        self.x = int((self.winfo_screenwidth() * 1.25 - self.width * 1.25) / 2)
+        self.x = int((self.winfo_screenwidth() * 1.5 - self.width * 1.5) / 2)
         self.x_1 = int((self.winfo_screenwidth() - self.width) / 2)
-        self.y = int((self.winfo_screenheight() * 1.25 - self.height * 1.25) // 2)
+        self.y = int((self.winfo_screenheight() * 1.5 - self.height * 1.5) // 2)
         self.y_1 = int((self.winfo_screenheight() - self.height) // 2)
 
         with open(file_path, "r") as f:
