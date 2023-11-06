@@ -13,7 +13,7 @@ import atexit
 
 global p
 p=None
-file_path = "./config.txt"
+file_path = "../config.txt"
 
 
 def on_exit():
@@ -314,7 +314,7 @@ def launch_button_click():
     # print(os.getcwd())
     # os.system("echo \"sad\"")
     # os.system("python control_latest.py")
-    control_latest = "./control_latest.py"
+    control_latest = "../control_latest.py"
     p = subprocess.Popen(["python", control_latest])
     # print("subprocess started")
     # return p
