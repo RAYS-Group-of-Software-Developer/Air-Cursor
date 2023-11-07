@@ -34,6 +34,10 @@ pip install -r ./Requirements.txt
 cd .\GUI\
 
 python .\AirCursor.py
-```
 
-[![Watch the Demo](https://youtu.be/_ViO8jnHcRw)
+```
+## Video demo
+
+To see how to install and use see demo video below :
+
+[![Watch the Demo](https://i9.ytimg.com/vi/_ViO8jnHcRw/mqdefault.jpg?v=654a7c2c&sqp=CICJqqoG&rs=AOn4CLBHvWKKcVI3GmcFGIzfkvJmiQDK_g)](https://youtu.be/_ViO8jnHcRw?si=cYRLpV1Co5Phw_pN)
