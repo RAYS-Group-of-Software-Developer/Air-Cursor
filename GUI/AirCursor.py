@@ -13,7 +13,14 @@ import atexit
 
 global p
 p=None
-file_path = "./config.txt"
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Change the working directory
+os.chdir(script_dir)
+
+# Now you can use relative paths based on the script's directory
+file_path = "../config.txt"
 
 
 def on_exit():
@@ -79,23 +86,21 @@ class SplashFrame(ctk.CTkFrame):
             overwrite_preferred_drawing_method,
             **kwargs,
         )
-
-        self.label_gif1 = None
-        self.main_frame = self
-        self.main_frame.pack(expand=True, fill="both")
-        self.main_frame.columnconfigure(0, weight=1)
-        self.main_frame.rowconfigure(0, weight=1)
-        self.create_wdgets()
-
-    def create_wdgets(self):
         self.label_gif1 = ctk.CTkLabel(
-            self.main_frame,
+            self,
             bg_color="transparent",
             fg_color="transparent",
             text="",
             corner_radius=20,
             width=int(400*1.6), height=400
         )
+        self.pack(expand=True, fill="both")
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(0, weight=1)
+        self.create_wdgets()
+
+    def create_wdgets(self):
+        
 
         self.label_gif1.grid(row=0, column=0, sticky="nsew")
 
@@ -108,8 +113,210 @@ class SplashFrame(ctk.CTkFrame):
             1000, lambda: play_gif(self.gif1_frames, self.label_gif1)
         )
 
+
+def create_developer_frame(parent, img_path, name, role, email, github, linkedin, instagram, phone, side):
+    developer_frame = ctk.CTkFrame(
+        parent,
+        bg_color="transparent",
+        fg_color=("#89A6A6", "#2E4343"),
+        corner_radius=20,
+    )
+
+    developer_frame.grid_rowconfigure((0, 1, 2, 3), weight=1)
+    developer_frame.grid_columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
+
+    developer_frame.bind("<Configure>", lambda event: get_size(event))
+    width = 350
+    height = 200
+
+    def get_size(event):
+        width = event.width
+        height = event.height
+
+    width = width * 0.70
+    # height = width
+
+    developer_photo = ctk.CTkImage(
+        dark_image=Image.open(img_path),
+        light_image=Image.open(img_path),
+        size=(width, width),
+    )
+
+    brand_icons = os.path.join(os.path.dirname(__file__), "Assets", "Brand_icons")
+    github_img = ctk.CTkImage(
+        dark_image=Image.open(os.path.join(brand_icons, "github_dark.png")),
+        light_image=Image.open(os.path.join(brand_icons, "github_light.png")),
+        size=(20, 20),
+    )
+    gmail_img = ctk.CTkImage(
+        dark_image=Image.open(os.path.join(brand_icons, "gmail_dark.png")),
+        light_image=Image.open(os.path.join(brand_icons, "gmail_light.png")),
+        size=(20, 20),
+    )
+    linkedin_img = ctk.CTkImage(
+        dark_image=Image.open(os.path.join(brand_icons, "linkedin_dark.png")),
+        light_image=Image.open(os.path.join(brand_icons, "linkedin_light.png")),
+        size=(20, 20),
+    )
+    instagram_img = ctk.CTkImage(
+        dark_image=Image.open(os.path.join(brand_icons, "instagram_dark.png")),
+        light_image=Image.open(os.path.join(brand_icons, "instagram_light.png")),
+        size=(20, 20),
+    )
+    phone_img = ctk.CTkImage(
+        dark_image=Image.open(os.path.join(brand_icons, "phone_dark.png")),
+        light_image=Image.open(os.path.join(brand_icons, "phone_light.png")),
+        size=(20, 20),
+    )
+
+    developer_photo_label = ctk.CTkLabel(
+        developer_frame,
+        image=developer_photo,
+        corner_radius=10,
+        text="",
+        fg_color="transparent",
+        bg_color="transparent"
+    )
+    developer_name_label = ctk.CTkLabel(
+        developer_frame,
+        text=name,
+        font=("Segoe UI", 25, "bold"),
+        corner_radius=10,
+    )
+    developer_contribution = ctk.CTkTextbox(
+        developer_frame,
+        font=("Segoe UI", 15, 'bold'),
+        corner_radius=10,
+        bg_color="transparent",
+        fg_color="transparent",
+        wrap="word",
+    )
+    developer_contribution.insert("1.0", role)
+    developer_contribution.configure(state="disabled")
+    developer_email_label = ctk.CTkLabel(
+        developer_frame,
+        text="",
+        image=gmail_img,
+        bg_color="transparent",
+        fg_color="transparent",
+        font=("Segoe UI", 15),
+        corner_radius=10,
+    )
+    developer_github_label = ctk.CTkLabel(
+        developer_frame,
+        text="",
+        image=github_img,
+        bg_color="transparent",
+        fg_color="transparent",
+        font=("Segoe UI", 15),
+        corner_radius=10,
+    )
+    developer_linkedin_label = ctk.CTkLabel(
+        developer_frame,
+        text="",
+        image=linkedin_img,
+        bg_color="transparent",
+        fg_color="transparent",
+        font=("Segoe UI", 15),
+        corner_radius=10,
+    )
+    developer_phone_label = ctk.CTkLabel(
+        developer_frame,
+        text="",
+        image=phone_img,
+        bg_color="transparent",
+        fg_color="transparent",
+        font=("Segoe UI", 15),
+        corner_radius=10,
+    )
+    developer_instagram_label = ctk.CTkLabel(
+        developer_frame,
+        text="",
+        image=instagram_img,
+        bg_color="transparent",
+        fg_color="transparent",
+        font=("Segoe UI", 15),
+        corner_radius=10,
+    )
+
+    developer_email_label.bind("<Enter>", lambda event: onHover(event, developer_email_label))
+    developer_email_label.bind("<Leave>", lambda event: onLeave(event, developer_email_label))
+    developer_email_label.bind("<Button-1>", lambda event: webbrowser.open_new_tab("mailto:" + email))
+
+    developer_github_label.bind("<Enter>", lambda event: onHover(event, developer_github_label))
+    developer_github_label.bind("<Leave>", lambda event: onLeave(event, developer_github_label))
+    developer_github_label.bind("<Button-1>", lambda event: webbrowser.open_new_tab(github))
+
+    developer_linkedin_label.bind("<Enter>", lambda event: onHover(event, developer_linkedin_label))
+    developer_linkedin_label.bind("<Leave>", lambda event: onLeave(event, developer_linkedin_label))
+    developer_linkedin_label.bind("<Button-1>", lambda event: webbrowser.open_new_tab(linkedin))
+
+    developer_phone_label.bind("<Enter>", lambda event: onHover(event, developer_phone_label))
+    developer_phone_label.bind("<Leave>", lambda event: onLeave(event, developer_phone_label))
+    developer_phone_label.bind("<Button-1>", lambda event: webbrowser.open_new_tab("tel:" + str(phone)))
+
+    developer_instagram_label.bind("<Enter>", lambda event: onHover(event, developer_instagram_label))
+    developer_instagram_label.bind("<Leave>", lambda event: onLeave(event, developer_instagram_label))
+    developer_instagram_label.bind("<Button-1>", lambda event: webbrowser.open_new_tab(instagram))
+
+    def onHover(event, widget):
+        widget.configure(fg_color=("#89A6A6", "#2E4343"))
+        widget.configure(cursor="hand2")
+
+    def onLeave(event, widget):
+        widget.configure(fg_color="transparent")
+        widget.configure(cursor="arrow")
+
+    # place the widgets
+    if side == "left":
+        developer_photo_label.grid(row=0, column=0, rowspan=4, sticky="nsw", padx=20, pady=20)
+        developer_name_label.grid(row=0, column=2, columnspan=4, sticky="n", padx=(50, 50), pady=(20, 0))
+        developer_contribution.grid(row=1, column=2, rowspan=1, columnspan=4, sticky="nswe", padx=(50, 50), pady=(0, 0))
+        developer_email_label.grid(row=2, column=2, columnspan=1, sticky="s", padx=(20, 5), pady=(0, 30))
+        developer_github_label.grid(row=2, column=3, columnspan=1, sticky="s", padx=(5, 5), pady=(0, 30))
+        developer_linkedin_label.grid(row=2, column=4, columnspan=1, sticky="s", padx=(5, 5), pady=(0, 30))
+        developer_phone_label.grid(row=2, column=5, columnspan=1, sticky="s", padx=(5, 20), pady=(0, 30))
+        # developer_instagram_label.grid(row=3, column=6, columnspan=1, sticky="n", padx=(5, 20), pady=(0, 10))
+    elif side == "right":
+        developer_photo_label.grid(row=0, column=6, rowspan=4, sticky="nse", padx=(50, 20), pady=20)
+        developer_name_label.grid(row=0, column=0, columnspan=4, sticky="n", padx=50, pady=(20, 0))
+        developer_contribution.grid(row=1, column=0, rowspan=1, columnspan=4, sticky="nsew", padx=50, pady=(0, 0))
+        developer_email_label.grid(row=2, column=0, columnspan=1, sticky="s", padx=(20, 5), pady=(0, 30))
+        developer_github_label.grid(row=2, column=1, columnspan=1, sticky="s", padx=(5, 5), pady=(0, 30))
+        developer_linkedin_label.grid(row=2, column=2, columnspan=1, sticky="s", padx=(5, 5), pady=(0, 30))
+        developer_phone_label.grid(row=2, column=3, columnspan=1, sticky="s", padx=(5, 20), pady=(0, 30))
+        # developer_instagram_label.grid(row=3, column=4, columnspan=1, sticky="n", padx=(5, 20), pady=(0, 10))
+
+    return developer_frame
+
+
 global running
 running = False
+
+
+def stop_button_click():
+    global running
+    running = False
+    # sys.exit()
+    # p.kill()
+    global p
+    if p:
+        p.terminate()
+        p.wait()
+        # print("process ended")
+    else:
+        return
+
+
+def launch_button_click():
+    global p
+    global running
+    if running:
+        return
+    running = True
+    control_latest = "../control_latest.py"
+    p = subprocess.Popen(["python", control_latest])
+
 
 
 def open_camera(camera_index: int = 0):
@@ -329,7 +536,7 @@ class Base(ctk.CTkFrame):
             bg_color="transparent",
             fg_color=("#648C60", "#32532F"),
             hover_color=("#32532F", "#648C60"),
-            command=self.launch_button_click,
+            command=launch_button_click,
         )
         stop_button = ctk.CTkButton(
             button_frame,
@@ -341,7 +548,7 @@ class Base(ctk.CTkFrame):
             hover_color=("#6D3030", "#E65151"),
             # border_color="white",
             # border_width=1,
-            command=self.stop_button_click,
+            command=stop_button_click,
         )
 
         stop_button.place(
@@ -920,7 +1127,7 @@ class Base(ctk.CTkFrame):
         label1.pack(side='left', padx=20)
 
         # frame 1 -> developer 1 (Souvik)
-        souvik_frame = self.create_developer_frame(
+        souvik_frame = create_developer_frame(
             self.About_us_Frame,
             img_path=Souvik_img_path,
             name="Souvik Karmakar",
@@ -934,7 +1141,7 @@ class Base(ctk.CTkFrame):
         )
 
         # frame 2 -> developer 2 (Raman)
-        raman_frame = self.create_developer_frame(
+        raman_frame = create_developer_frame(
             self.About_us_Frame,
             img_path=Raman_img_path,
             name="Raman Sharma",
@@ -948,7 +1155,7 @@ class Base(ctk.CTkFrame):
         )
 
         # frame 3 -> developer 3 (Yash)
-        yashwanth_frame = self.create_developer_frame(
+        yashwanth_frame = create_developer_frame(
             self.About_us_Frame,
             img_path=Yashwanth_img_path,
             name="Boda Yashwanth",
@@ -962,7 +1169,7 @@ class Base(ctk.CTkFrame):
         )
 
         # frame 4 -> developer 4 (Sukhman)
-        sukhman_frame = self.create_developer_frame(
+        sukhman_frame = create_developer_frame(
             self.About_us_Frame,
             img_path=Sukhman_img_path,
             name="Sukhman Singh",
@@ -975,7 +1182,7 @@ class Base(ctk.CTkFrame):
             side="right"
         )
         # frame 5 -> developer 5 (Ayush)
-        ayush_frame = self.create_developer_frame(
+        ayush_frame = create_developer_frame(
             self.About_us_Frame,
             img_path=Ayush_img_path,
             name="Ayush Ranjan",
@@ -1029,181 +1236,6 @@ class Base(ctk.CTkFrame):
         sukhman_frame.pack(expand=True, fill="both", pady=20, padx=20)
         ayush_frame.pack(expand=True, fill="both", pady=20, padx=20)
 
-    def create_developer_frame(self,parent, img_path, name, role, email, github, linkedin, instagram, phone, side):
-        developer_frame = ctk.CTkFrame(
-            parent,
-            bg_color="transparent",
-            fg_color=("#89A6A6", "#2E4343"),
-            corner_radius=20,
-        )
-
-        developer_frame.grid_rowconfigure((0, 1, 2, 3), weight=1)
-        developer_frame.grid_columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
-
-        developer_frame.bind("<Configure>", lambda event: get_size(event))
-        width = 350
-        height = 200
-
-        def get_size(event):
-            width = event.width
-            height = event.height
-
-        width = width * 0.70
-        # height = width
-
-        developer_photo = ctk.CTkImage(
-            dark_image=Image.open(img_path),
-            light_image=Image.open(img_path),
-            size=(width, width),
-        )
-
-        brand_icons = os.path.join(os.path.dirname(__file__), "Assets", "Brand_icons")
-        github_img = ctk.CTkImage(
-            dark_image=Image.open(os.path.join(brand_icons, "github_dark.png")),
-            light_image=Image.open(os.path.join(brand_icons, "github_light.png")),
-            size=(20, 20),
-        )
-        gmail_img = ctk.CTkImage(
-            dark_image=Image.open(os.path.join(brand_icons, "gmail_dark.png")),
-            light_image=Image.open(os.path.join(brand_icons, "gmail_light.png")),
-            size=(20, 20),
-        )
-        linkedin_img = ctk.CTkImage(
-            dark_image=Image.open(os.path.join(brand_icons, "linkedin_dark.png")),
-            light_image=Image.open(os.path.join(brand_icons, "linkedin_light.png")),
-            size=(20, 20),
-        )
-        instagram_img = ctk.CTkImage(
-            dark_image=Image.open(os.path.join(brand_icons, "instagram_dark.png")),
-            light_image=Image.open(os.path.join(brand_icons, "instagram_light.png")),
-            size=(20, 20),
-        )
-        phone_img = ctk.CTkImage(
-            dark_image=Image.open(os.path.join(brand_icons, "phone_dark.png")),
-            light_image=Image.open(os.path.join(brand_icons, "phone_light.png")),
-            size=(20, 20),
-        )
-
-        developer_photo_label = ctk.CTkLabel(
-            developer_frame,
-            image=developer_photo,
-            corner_radius=10,
-            text="",
-            fg_color="transparent",
-            bg_color="transparent"
-        )
-        developer_name_label = ctk.CTkLabel(
-            developer_frame,
-            text=name,
-            font=("Segoe UI", 25, "bold"),
-            corner_radius=10,
-        )
-        developer_contribution = ctk.CTkTextbox(
-            developer_frame,
-            font=("Segoe UI", 15, 'bold'),
-            corner_radius=10,
-            bg_color="transparent",
-            fg_color="transparent",
-            wrap="word",
-        )
-        developer_contribution.insert("1.0", role)
-        developer_contribution.configure(state="disabled")
-        developer_email_label = ctk.CTkLabel(
-            developer_frame,
-            text="",
-            image=gmail_img,
-            bg_color="transparent",
-            fg_color="transparent",
-            font=("Segoe UI", 15),
-            corner_radius=10,
-        )
-        developer_github_label = ctk.CTkLabel(
-            developer_frame,
-            text="",
-            image=github_img,
-            bg_color="transparent",
-            fg_color="transparent",
-            font=("Segoe UI", 15),
-            corner_radius=10,
-        )
-        developer_linkedin_label = ctk.CTkLabel(
-            developer_frame,
-            text="",
-            image=linkedin_img,
-            bg_color="transparent",
-            fg_color="transparent",
-            font=("Segoe UI", 15),
-            corner_radius=10,
-        )
-        developer_phone_label = ctk.CTkLabel(
-            developer_frame,
-            text="",
-            image=phone_img,
-            bg_color="transparent",
-            fg_color="transparent",
-            font=("Segoe UI", 15),
-            corner_radius=10,
-        )
-        developer_instagram_label = ctk.CTkLabel(
-            developer_frame,
-            text="",
-            image=instagram_img,
-            bg_color="transparent",
-            fg_color="transparent",
-            font=("Segoe UI", 15),
-            corner_radius=10,
-        )
-
-        developer_email_label.bind("<Enter>", lambda event: onHover(event, developer_email_label))
-        developer_email_label.bind("<Leave>", lambda event: onLeave(event, developer_email_label))
-        developer_email_label.bind("<Button-1>", lambda event: webbrowser.open_new_tab("mailto:" + email))
-
-        developer_github_label.bind("<Enter>", lambda event: onHover(event, developer_github_label))
-        developer_github_label.bind("<Leave>", lambda event: onLeave(event, developer_github_label))
-        developer_github_label.bind("<Button-1>", lambda event: webbrowser.open_new_tab(github))
-
-        developer_linkedin_label.bind("<Enter>", lambda event: onHover(event, developer_linkedin_label))
-        developer_linkedin_label.bind("<Leave>", lambda event: onLeave(event, developer_linkedin_label))
-        developer_linkedin_label.bind("<Button-1>", lambda event: webbrowser.open_new_tab(linkedin))
-
-        developer_phone_label.bind("<Enter>", lambda event: onHover(event, developer_phone_label))
-        developer_phone_label.bind("<Leave>", lambda event: onLeave(event, developer_phone_label))
-        developer_phone_label.bind("<Button-1>", lambda event: webbrowser.open_new_tab("tel:" + str(phone)))
-
-        developer_instagram_label.bind("<Enter>", lambda event: onHover(event, developer_instagram_label))
-        developer_instagram_label.bind("<Leave>", lambda event: onLeave(event, developer_instagram_label))
-        developer_instagram_label.bind("<Button-1>", lambda event: webbrowser.open_new_tab(instagram))
-
-        def onHover(event, widget):
-            widget.configure(fg_color=("#89A6A6", "#2E4343"))
-            widget.configure(cursor="hand2")
-
-        def onLeave(event, widget):
-            widget.configure(fg_color="transparent")
-            widget.configure(cursor="arrow")
-
-        # place the widgets
-        if side == "left":
-            developer_photo_label.grid(row=0, column=0, rowspan=4, sticky="nsw", padx=20, pady=20)
-            developer_name_label.grid(row=0, column=2, columnspan=4, sticky="n", padx=(50, 50), pady=(20, 0))
-            developer_contribution.grid(row=1, column=2, rowspan=1, columnspan=4, sticky="nswe", padx=(50, 50), pady=(0, 0))
-            developer_email_label.grid(row=2, column=2, columnspan=1, sticky="s", padx=(20, 5), pady=(0, 30))
-            developer_github_label.grid(row=2, column=3, columnspan=1, sticky="s", padx=(5, 5), pady=(0, 30))
-            developer_linkedin_label.grid(row=2, column=4, columnspan=1, sticky="s", padx=(5, 5), pady=(0, 30))
-            developer_phone_label.grid(row=2, column=5, columnspan=1, sticky="s", padx=(5, 20), pady=(0, 30))
-            # developer_instagram_label.grid(row=3, column=6, columnspan=1, sticky="n", padx=(5, 20), pady=(0, 10))
-        elif side == "right":
-            developer_photo_label.grid(row=0, column=6, rowspan=4, sticky="nse", padx=(50, 20), pady=20)
-            developer_name_label.grid(row=0, column=0, columnspan=4, sticky="n", padx=50, pady=(20, 0))
-            developer_contribution.grid(row=1, column=0, rowspan=1, columnspan=4, sticky="nsew", padx=50, pady=(0, 0))
-            developer_email_label.grid(row=2, column=0, columnspan=1, sticky="s", padx=(20, 5), pady=(0, 30))
-            developer_github_label.grid(row=2, column=1, columnspan=1, sticky="s", padx=(5, 5), pady=(0, 30))
-            developer_linkedin_label.grid(row=2, column=2, columnspan=1, sticky="s", padx=(5, 5), pady=(0, 30))
-            developer_phone_label.grid(row=2, column=3, columnspan=1, sticky="s", padx=(5, 20), pady=(0, 30))
-            # developer_instagram_label.grid(row=3, column=4, columnspan=1, sticky="n", padx=(5, 20), pady=(0, 10))
-
-        return developer_frame
-
     # button click functions
 
     # ############### Configure page button click functions ################ #
@@ -1241,38 +1273,6 @@ class Base(ctk.CTkFrame):
             "https://github.com/RAYS-Group-of-Software-Developer/Air-Cursor/discussions"
         )
 
-    def stop_button_click(self):
-        global running
-        running = False
-        # sys.exit()
-        # p.kill()
-        global p
-        if p is None:
-            return
-        if p:
-            p.terminate()
-            p.wait()
-            # print("process ended")
-
-    def launch_button_click(self):
-        global p
-        global running
-        if running:
-            return
-        running = True
-        # os.system("cd ./../")
-        # os.chdir("..")
-        # print(os.getcwd())
-        # os.system("echo \"sad\"")
-        # os.system("python control_latest.py")
-        control_latest = "./control_latest.py"
-        p = subprocess.Popen(["python", control_latest])
-        # print("subprocess started")
-        # return p
-        # with open("C:\scripts\other.py") as f:
-        #     exec(f.read())
-
-
     # ############### About us page button click functions ################ #
     def about_us_button_click(self):
         self._create_about_us_page()
@@ -1294,10 +1294,10 @@ class MainWindow(ctk.CTk):
         super().__init__(fg_color, **kwargs)
 
         # window settings
-        self.height = 400
+        self.height = int(400)
         self.width = int(self.height * 1.6)
-        self.x = int((self.winfo_screenwidth() * 1.5 - self.width * 1.5) / 2)
-        self.x_1 = int((self.winfo_screenwidth() - self.width) / 2)
+        self.x = int((self.winfo_screenwidth() * 1.5 - self.width * 1.5) // 2)
+        self.x_1 = int((self.winfo_screenwidth() - self.width) // 2)
         self.y = int((self.winfo_screenheight() * 1.5 - self.height * 1.5) // 2)
         self.y_1 = int((self.winfo_screenheight() - self.height) // 2)
 
