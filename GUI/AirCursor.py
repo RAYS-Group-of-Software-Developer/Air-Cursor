@@ -13,7 +13,7 @@ import atexit
 
 global p
 p=None
-file_path = "../config.txt"
+file_path = "./config.txt"
 
 
 def on_exit():
@@ -289,37 +289,8 @@ global running
 running = False
 
 
-def stop_button_click():
-    global running
-    running = False
-    # sys.exit()
-    # p.kill()
-    global p
-    if p is None:
-        return
-    if p:
-        p.terminate()
-        p.wait()
-        # print("process ended")
 
 
-def launch_button_click():
-    global p
-    global running
-    if running:
-        return
-    running = True
-    # os.system("cd ./../")
-    # os.chdir("..")
-    # print(os.getcwd())
-    # os.system("echo \"sad\"")
-    # os.system("python control_latest.py")
-    control_latest = "../control_latest.py"
-    p = subprocess.Popen(["python", control_latest])
-    # print("subprocess started")
-    # return p
-    # with open("C:\scripts\other.py") as f:
-    #     exec(f.read())
 
 
 def open_camera(camera_index: int = 0):
@@ -539,7 +510,7 @@ class Base(ctk.CTkFrame):
             bg_color="transparent",
             fg_color=("#648C60", "#32532F"),
             hover_color=("#32532F", "#648C60"),
-            command=launch_button_click,
+            command=self.launch_button_click,
         )
         stop_button = ctk.CTkButton(
             button_frame,
@@ -551,7 +522,7 @@ class Base(ctk.CTkFrame):
             hover_color=("#6D3030", "#E65151"),
             # border_color="white",
             # border_width=1,
-            command=stop_button_click,
+            command=self.stop_button_click,
         )
 
         stop_button.place(
@@ -1275,6 +1246,38 @@ class Base(ctk.CTkFrame):
         webbrowser.open_new_tab(
             "https://github.com/RAYS-Group-of-Software-Developer/Air-Cursor/discussions"
         )
+
+    def stop_button_click(self):
+        global running
+        running = False
+        # sys.exit()
+        # p.kill()
+        global p
+        if p is None:
+            return
+        if p:
+            p.terminate()
+            p.wait()
+            # print("process ended")
+
+    def launch_button_click(self):
+        global p
+        global running
+        if running:
+            return
+        running = True
+        # os.system("cd ./../")
+        # os.chdir("..")
+        # print(os.getcwd())
+        # os.system("echo \"sad\"")
+        # os.system("python control_latest.py")
+        control_latest = "./control_latest.py"
+        p = subprocess.Popen(["python", control_latest])
+        # print("subprocess started")
+        # return p
+        # with open("C:\scripts\other.py") as f:
+        #     exec(f.read())
+
 
     # ############### About us page button click functions ################ #
     def about_us_button_click(self):
