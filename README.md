@@ -31,7 +31,5 @@ To get started with Air Cursor, follow these steps:
 ```
 pip install -r ./Requirements.txt
 
-cd .\GUI\
-
-python .\AirCursor.py
+python3 ./GUI/AirCursor.py
 ```

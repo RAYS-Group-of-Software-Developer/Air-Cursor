@@ -20,7 +20,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(script_dir)
 
 # Now you can use relative paths based on the script's directory
-file_path = "config.txt"
+file_path = "../config.txt"
 
 
 def on_exit():
@@ -105,7 +105,7 @@ class SplashFrame(ctk.CTkFrame):
         self.label_gif1.grid(row=0, column=0, sticky="nsew")
 
         workspace = os.path.dirname(__file__)
-        assets = os.path.join(workspace, "GUI/assets")
+        assets = os.path.join(workspace, "Assets")
         Splash_Animation = os.path.join(assets, "Splash_Animation")
         air_animation = os.path.join(Splash_Animation, "air_animation.gif")
         self.gif1_frames = _get_frames(air_animation)
@@ -142,7 +142,7 @@ def create_developer_frame(parent, img_path, name, role, email, github, linkedin
         size=(width, width),
     )
 
-    brand_icons = os.path.join(os.path.dirname(__file__), "GUI/assets", "Brand_icons")
+    brand_icons = os.path.join(os.path.dirname(__file__), "Assets", "Brand_icons")
     github_img = ctk.CTkImage(
         dark_image=Image.open(os.path.join(brand_icons, "github_dark.png")),
         light_image=Image.open(os.path.join(brand_icons, "github_light.png")),
@@ -314,7 +314,7 @@ def launch_button_click():
     if running:
         return
     running = True
-    control_latest = "./control_latest.py"
+    control_latest = "../control_latest.py"
     p = subprocess.Popen(["python", control_latest])
 
 
@@ -366,7 +366,7 @@ class Base(ctk.CTkFrame):
         self.camera_index = camera_index
         self.smoothness_factor_2 = smoothness_factor_2
         self.smoothness_factor_1 = smoothness_factor_1
-        self.assets_path = os.path.join(os.path.dirname(__file__), "GUI/assets")
+        self.assets_path = os.path.join(os.path.dirname(__file__), "assets")
         self.cap = None
         self.Show_camera = False
 
@@ -464,7 +464,7 @@ class Base(ctk.CTkFrame):
 
         # background image
         imgPath = os.path.join(
-            os.path.dirname(__file__), "GUI/assets", "Backgrounds", "Launch_bg.jpg"
+            os.path.dirname(__file__), "Assets", "Backgrounds", "Launch_bg.jpg"
         )
         img = Image.open(imgPath)
         img_obj = ctk.CTkImage(dark_image=img, light_image=img, size=(800, 200))
@@ -1103,7 +1103,7 @@ class Base(ctk.CTkFrame):
         )
         description.configure(state="disabled")
 
-        Developers_img_path = os.path.join(os.path.dirname(__file__), "GUI/assets", "Developers")
+        Developers_img_path = os.path.join(os.path.dirname(__file__), "Assets", "Developers")
         Panda_img_path = os.path.join(Developers_img_path, "Panda.jpg")
         Souvik_img_path = os.path.join(Developers_img_path, "Souvik.png")
         Sukhman_img_path = os.path.join(Developers_img_path, "Sukhman.png")
@@ -1196,8 +1196,8 @@ class Base(ctk.CTkFrame):
         )
 
         self.back_button_image = ctk.CTkImage(
-            dark_image=Image.open(os.path.join(os.path.dirname(__file__), "GUI/assets", "Buttons", "arrow_white.png")),
-            light_image=Image.open(os.path.join(os.path.dirname(__file__), "GUI/assets", "Buttons", "arrow_black.png")),
+            dark_image=Image.open(os.path.join(os.path.dirname(__file__), "Assets", "Buttons", "arrow_white.png")),
+            light_image=Image.open(os.path.join(os.path.dirname(__file__), "Assets", "Buttons", "arrow_black.png")),
             size=(30, 30),
         )
 
