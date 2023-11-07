@@ -295,12 +295,12 @@ def stop_button_click():
     # sys.exit()
     # p.kill()
     global p
-    if p is None:
-        return
     if p:
         p.terminate()
         p.wait()
         # print("process ended")
+    else:
+        return
 
 
 def launch_button_click():
@@ -309,17 +309,9 @@ def launch_button_click():
     if running:
         return
     running = True
-    # os.system("cd ./../")
-    # os.chdir("..")
-    # print(os.getcwd())
-    # os.system("echo \"sad\"")
-    # os.system("python control_latest.py")
     control_latest = "../control_latest.py"
     p = subprocess.Popen(["python", control_latest])
-    # print("subprocess started")
-    # return p
-    # with open("C:\scripts\other.py") as f:
-    #     exec(f.read())
+
 
 
 def open_camera(camera_index: int = 0):
