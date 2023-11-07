@@ -13,7 +13,14 @@ import atexit
 
 global p
 p=None
-file_path = "./config.txt"
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Change the working directory
+os.chdir(script_dir)
+
+# Now you can use relative paths based on the script's directory
+file_path = "../config.txt"
 
 
 def on_exit():
