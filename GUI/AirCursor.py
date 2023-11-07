@@ -13,7 +13,7 @@ import atexit
 
 global p
 p=None
-file_path = "../config.txt"
+file_path = "./config.txt"
 
 
 def on_exit():
@@ -79,23 +79,21 @@ class SplashFrame(ctk.CTkFrame):
             overwrite_preferred_drawing_method,
             **kwargs,
         )
-
-        self.label_gif1 = None
-        self.main_frame = self
-        self.main_frame.pack(expand=True, fill="both")
-        self.main_frame.columnconfigure(0, weight=1)
-        self.main_frame.rowconfigure(0, weight=1)
-        self.create_wdgets()
-
-    def create_wdgets(self):
         self.label_gif1 = ctk.CTkLabel(
-            self.main_frame,
+            self,
             bg_color="transparent",
             fg_color="transparent",
             text="",
             corner_radius=20,
             width=int(400*1.6), height=400
         )
+        self.pack(expand=True, fill="both")
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(0, weight=1)
+        self.create_wdgets()
+
+    def create_wdgets(self):
+        
 
         self.label_gif1.grid(row=0, column=0, sticky="nsew")
 
